@@ -34,7 +34,7 @@
 - [x] T3.3 Separate official and AUR package lists; verify every package name.
 - [x] T3.4 Add pre-flight checks (is Arch, not root, internet, free disk, UEFI).
 - [x] T3.5 Add a final summary screen and a clear failure message with log path.
-- [ ] T3.6 Write tests/vm-smoke-test.sh (or document the manual procedure) for a fresh Arch VM; run it if QEMU is available.
+- [x] T3.6 Write tests/vm-smoke-test.sh (or document the manual procedure) for a fresh Arch VM; run it if QEMU is available.
 
 ## STAGE 4: Themes and visuals
 - [ ] T4.1 Define the theme folder contract in docs/THEMES.md (which files, which variables).

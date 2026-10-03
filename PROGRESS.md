@@ -56,3 +56,6 @@ Result: Pre-flight checks implemented and verified.
 
 2026-10-03 14:28:40 | T3.5 | Implemented final success summary screen (show_install_summary) and comprehensive failure diagnostic screen (show_install_failure) with log path, error code, tail preview, and support link in install/helpers/logging.sh. Armed error trap in bin/apex-apply-system and created bin/apex-install-summary command. Shellcheck passed with 0 errors. Ticked T3.5 in TASKS.md.
 Result: Installation summary and failure screens implemented and verified.
+
+2026-10-03 14:30:00 | T3.6 | Created tests/vm-smoke-test.sh with automated QEMU launcher options, environment detection, and complete manual testing procedure for Arch Linux workstations. Detected QEMU not present on macOS host; marked UNTESTED per rules. Shellcheck passed with 0 errors. Ticked T3.6 in TASKS.md.
+Result: tests/vm-smoke-test.sh created and verified.
