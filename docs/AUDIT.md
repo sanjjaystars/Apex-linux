@@ -24,6 +24,10 @@ The `install/` directory contains the scripts that all three contexts share. Eac
 subdirectory is a *stage*; stages are orchestrated by `all.sh` files sourced in
 sequence by the two `omarchy-apply-*` commands.
 
+Package files (counts from `grep -vcE '^\s*(#|$)'`):
+- `install/omarchy-base.packages` — **159 packages** (pacstrapped by ISO)
+- `install/omarchy-other.packages` — **57 packages** (optional/hardware/ISO-builder extras)
+
 ---
 
 ## Stage 0 — Helpers (`install/helpers/`)
@@ -56,8 +60,10 @@ in the helpers file and reused by both callers.
 **`install/provisioning/setup-form.sh`** — the interactive TUI form shared by
 both the ISO configurator and the first-boot owner-setup path. It defines the
 keyboard layout list (`$OMARCHY_KEYBOARD_LAYOUTS`, leading with English variants),
-username/hostname/password validation patterns, and five `omarchy_prompt_*`
-functions (`keyboard`, `username`, `password`, `identity`, `hostname`, `timezone`).
+username/hostname/password validation patterns, and **six** `omarchy_prompt_*`
+functions: `omarchy_prompt_keyboard`, `omarchy_prompt_username`,
+`omarchy_prompt_password`, `omarchy_prompt_identity`, `omarchy_prompt_hostname`,
+`omarchy_prompt_timezone` (confirmed by `grep -E '^omarchy_prompt_[a-z_]+\(\)'`).
 All prompts are driven by `gum`; exit status 0 means accepted, 1 means Esc
 (unwind to start), 130 means Ctrl+C (caller-specific side channel — the ISO uses
 it to arm deferred provisioning or toggle encryption). This file is *sourced*,
@@ -303,12 +309,15 @@ from the bundled ISO tarball when `$OMARCHY_SETUP_CONTEXT` is `iso-chroot` or
 `/var/lib/omarchy/provisioning/packages` respectively, then loosening the pin to
 `latest`); falls back to `mise use -g node@latest` on live systems.
 
-**`mise.sh`** — (identical content to `mise-work.sh` in this repo snapshot)
-configures `mise` and installs the same full AI CLI and developer tool set:
-`codex`, `claude`, `crush`, `antigravity-cli`/`agy`, `gh`, `copilot`,
-`opencode`, `npm:playwright`, `pi`, `oh-my-pi`/`omp`, `grok`, `cursor-agent`,
-`npm:@kitlangton/ghui`, `aqua:modem-dev/hunk`, `hey`, `basecamp`, `npm:cf`,
-`ori`, and `muse`.
+**`mise.sh`** — **distinct from `mise-work.sh`** (confirmed by diff). Installs
+the same AI CLI and developer tools as `mise-work.sh` (same `omarchy-mise-install`
+call list: `codex`, `claude`, `crush`, `antigravity-cli`/`agy`, `gh`,
+`copilot`, `opencode`, `npm:playwright`, `pi`, `oh-my-pi`/`omp`, `grok`,
+`cursor-agent`, `npm:@kitlangton/ghui`, `aqua:modem-dev/hunk`, `hey`,
+`basecamp`, `npm:cf`, `ori`, `muse`), but does **not** create `~/Work/` or
+handle the offline Node tarball. It also sets `upgrade.auto_prune false` before
+installing. Purpose: installs AI/dev CLIs for the standard user. `mise-work.sh`
+is for the work/offline-install path that also sets up Node from the ISO bundle.
 
 **`default-keyring.sh`** — creates
 `~/.local/share/keyrings/Default_keyring.keyring` with `lock-on-idle=false` and
