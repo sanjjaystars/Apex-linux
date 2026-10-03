@@ -92,3 +92,6 @@ Result: docs/KEYS.md and bin/apex-keys created and verified.
 2026-10-03 15:02:00 | T6.1 | Initialized iso/ structure from Archiso releng profile specification. Created iso/profiledef.sh (x86_64, zstd compression, APEX_LINUX volume label), iso/packages.x86_64 (full base, systemd, btrfs, cryptsetup, snapper, network, TUI, and installer dependencies), iso/pacman.conf, and iso/airootfs/etc/mkinitcpio.conf. check-name-leaks.sh passed with 0 leaks. Ticked T6.1 in TASKS.md.
 Result: iso/ skeleton and package list created and verified.
 
+2026-10-03 15:03:00 | T6.2 | Configured branded bootloader menus and live environment identity. Generated GRUB EFI config (iso/grub/grub.cfg), Syslinux BIOS config (iso/syslinux/syslinux.cfg), and systemd-boot configs (iso/efiboot/loader/) with APEX_LINUX volume label and cyan/slate styling. Branded live console MOTD (iso/airootfs/etc/motd) with ANSI logo, issue banner, hostname (apex-live), and hosts. check-name-leaks.sh passed with 0 leaks. Ticked T6.2 in TASKS.md.
+Result: Branded boot menus, volume label, splash and MOTD created and verified.
+

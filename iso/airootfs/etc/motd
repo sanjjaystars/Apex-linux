@@ -1,0 +1,23 @@
+[1;36m
+       ▄▄▄       ███████▄   ████████  ██   ██
+      ▄███▄      ███   ███  ███        ██ ██ 
+     ▄█   █▄     ███▄▄▄███  ██████      ███  
+    ▄███████▄    ███▀▀▀▀    ███        ██ ██ 
+   ▄█▀     ▀█▄   ███        ████████  ██   ██
+[0m
+[1;37mWelcome to Apex Linux Live & Installation Media[0m
+Independent Arch Linux distribution • https://github.com/sanjjaystars/Apex-linux
+
+[1;32mGuided Installation:[0m
+  Run [1;33mapex-guided-installer[0m or [1;33m./install.sh[0m to start the guided setup.
+
+[1;32mNetwork Configuration:[0m
+  • Wi-Fi:           [1;34miwctl[0m (or [1;34mnmcli device wifi connect <SSID> password <PASS>[0m)
+  • Wired Ethernet:  Active automatically via DHCP
+  • Check status:    [1;34mping -c 3 archlinux.org[0m
+
+[1;32mOffline & Rescue Tools:[0m
+  • Partitioning:    [1;34mcfdisk[0m, [1;34mfdisk[0m, [1;34mparted[0m
+  • Btrfs / Snapper: [1;34mbtrfs subvolume list /[0m, [1;34msnapper[0m
+  • LUKS Encryption: [1;34mcryptsetup[0m
+

@@ -52,7 +52,7 @@
 
 ## STAGE 6: ISO
 - [x] T6.1 Create iso/ from the archiso releng profile; write the package list.
-- [ ] T6.2 Brand the boot menu, volume label, splash and MOTD.
+- [x] T6.2 Brand the boot menu, volume label, splash and MOTD.
 - [ ] T6.3 Embed the Apex repo and installer in the live environment.
 - [ ] T6.4 Write a guided installer (disk select, LUKS, btrfs subvolumes, snapper, bootloader, user creation). Destructive actions require TEST_TARGET or an explicit interactive confirmation.
 - [ ] T6.5 Write iso/build-iso.sh (runs mkarchiso in an Arch environment).
