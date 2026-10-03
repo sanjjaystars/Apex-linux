@@ -86,6 +86,7 @@ export APEX_INSTALL_LOG_FILE="${APEX_INSTALL_LOG_FILE:-/var/log/apex-install.log
 export PATH="$APEX_PATH/bin:$PATH"
 
 source "$APEX_INSTALL/helpers/logging.sh"
+arm_install_error_trap
 start_install_log
 
 source "$APEX_INSTALL/config/all.sh"

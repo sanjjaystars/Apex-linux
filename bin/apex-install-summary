@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# apex:summary=Display Apex installation summary or failure diagnostics
+# apex:group=install
+# apex:examples=apex install summary
+
+set -euo pipefail
+
+APEX_PATH="${APEX_PATH:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
+export APEX_PATH
+export APEX_INSTALL="${APEX_INSTALL:-$APEX_PATH/install}"
+
+# shellcheck source=install/helpers/logging.sh
+source "$APEX_INSTALL/helpers/logging.sh"
+
+show_install_summary

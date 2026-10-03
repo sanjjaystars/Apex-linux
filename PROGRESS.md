@@ -53,3 +53,6 @@ Result: Package lists categorized into official vs AUR and verified.
 
 2026-10-03 14:27:00 | T3.4 | Implemented installer pre-flight check library in install/helpers/preflight.sh and CLI command bin/apex-install-preflight (verifying Arch Linux, non-root user, active internet connection, minimum free disk space, and UEFI firmware). Shellcheck and check-name-leaks.sh passed with 0 errors. Ticked T3.4 in TASKS.md.
 Result: Pre-flight checks implemented and verified.
+
+2026-10-03 14:28:40 | T3.5 | Implemented final success summary screen (show_install_summary) and comprehensive failure diagnostic screen (show_install_failure) with log path, error code, tail preview, and support link in install/helpers/logging.sh. Armed error trap in bin/apex-apply-system and created bin/apex-install-summary command. Shellcheck passed with 0 errors. Ticked T3.5 in TASKS.md.
+Result: Installation summary and failure screens implemented and verified.
