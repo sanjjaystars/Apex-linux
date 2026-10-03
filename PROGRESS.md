@@ -17,3 +17,6 @@ Result: All Stage 1 audit documents complete and verified.
 
 2026-10-03 13:52:15 | T2.1 | Implemented scripts/rebrand.sh with --dry-run (default) and --apply modes. Powered by Python 3 for safe UTF-8 text replacement across omarchy/Omarchy/OMARCHY -> apex/Apex/APEX and bottom-up file/dir renaming. Skips .git, reference/, docs/, and tracking files. Verified shellcheck and bash -n pass with zero errors. Tested dry-run on current repo and against reference/omarchy (identified 1,323 content-mod files, 564 renamed items). Ticked T2.1 in TASKS.md.
 Result: scripts/rebrand.sh written, validated, and tested.
+
+2026-10-03 13:53:10 | T2.2 | Executed dry-run review against reference/omarchy. Analyzed 1,323 files flagged for content replacement and 564 items flagged for renaming. Noted findings in DECISIONS.md: wallpaper exclusions, URL translations, env var safety, and binary protection. Ticked T2.2 in TASKS.md.
+Result: Dry-run reviewed and documented in DECISIONS.md.
