@@ -59,3 +59,6 @@ Result: Installation summary and failure screens implemented and verified.
 
 2026-10-03 14:30:00 | T3.6 | Created tests/vm-smoke-test.sh with automated QEMU launcher options, environment detection, and complete manual testing procedure for Arch Linux workstations. Detected QEMU not present on macOS host; marked UNTESTED per rules. Shellcheck passed with 0 errors. Ticked T3.6 in TASKS.md.
 Result: tests/vm-smoke-test.sh created and verified.
+
+2026-10-03 14:31:10 | T4.1 | Authored comprehensive theme specification in docs/THEMES.md detailing theme directory contract, required and optional files, colors.toml 26-variable schema, template placeholder rules, target app configurations, and live reload pipeline. Ticked T4.1 in TASKS.md.
+Result: docs/THEMES.md created and verified.

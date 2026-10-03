@@ -37,7 +37,7 @@
 - [x] T3.6 Write tests/vm-smoke-test.sh (or document the manual procedure) for a fresh Arch VM; run it if QEMU is available.
 
 ## STAGE 4: Themes and visuals
-- [ ] T4.1 Define the theme folder contract in docs/THEMES.md (which files, which variables).
+- [x] T4.1 Define the theme folder contract in docs/THEMES.md (which files, which variables).
 - [ ] T4.2 Implement/port apex-theme-set and apex-theme-list; reload every app.
 - [ ] T4.3 Create "Apex Dark" plus 3 more themes.
 - [ ] T4.4 Write scripts/gen-wallpapers.sh (gradients/shapes only).
