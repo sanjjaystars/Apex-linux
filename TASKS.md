@@ -26,7 +26,7 @@
 - [x] T2.6 Write tests/check-name-leaks.sh that fails if any case form of the old name remains anywhere except THIRD_PARTY_NOTICES.md. Run it; it must pass.
 - [x] T2.7 Run shellcheck on every script; fix errors.
 - [x] T2.8 Replace branding assets (section 3, L3).
-- [ ] T2.9 Rewrite README.md and add LICENSE + THIRD_PARTY_NOTICES.md.
+- [x] T2.9 Rewrite README.md and add LICENSE + THIRD_PARTY_NOTICES.md.
 
 ## STAGE 3: Installer hardening
 - [ ] T3.1 Make boot.sh minimal, safe and readable (no piped sudo surprises).

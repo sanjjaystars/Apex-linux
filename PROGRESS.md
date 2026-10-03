@@ -38,3 +38,6 @@ Result: All 1,031 scripts pass shellcheck with zero errors.
 
 2026-10-03 14:14:15 | T2.8 | Generated bespoke branding assets for Apex Linux: logo.txt (ANSI block art, width 45, max 81), icon.txt (54x26 box frame with Apex chevron/peak emblem), logo.svg, icon.png (300x300 RGBA), default/sddm/apex/logo.png (800x188 RGBA), default/plymouth/logo.png (800x188 RGBA), config/apex/branding/about.txt, and config/apex/branding/screensaver.txt. Verified with tests/check-name-leaks.sh. Ticked T2.8 in TASKS.md.
 Result: All branding assets created and verified.
+
+2026-10-03 14:16:30 | T2.9 | Rewrote README.md with mandatory attribution ('Apex Linux is an independent project based on Arch Linux and inspired by Omarchy'), updated LICENSE with MIT license for Sanjjay, and created THIRD_PARTY_NOTICES.md acknowledging upstream Omarchy / 37signals. Verified tests/check-name-leaks.sh passes with 0 leaks. Ticked T2.9 in TASKS.md.
+Result: README.md, LICENSE, and THIRD_PARTY_NOTICES.md complete and verified.

@@ -1,12 +1,20 @@
-# Apex
+# Apex Linux
 
-Apex is a beautiful, fun & agentic Linux distribution by DHH.
+Apex Linux is an independent project based on Arch Linux and inspired by Omarchy.
 
-Read more at [apex.org](https://apex.org).
+Apex is designed to be a sleek, powerful, modern Wayland desktop environment focused on ergonomics, agentic workflows, beautiful aesthetics, and speed.
 
-## The Apex Manual
+## Overview
 
-The manual lives in [`manual/`](manual/), which is its authoritative source.
+- **Core Distribution**: Arch Linux
+- **Window Management**: Hyprland compositor with custom Quickshell integration
+- **Terminal & Shell**: Kitty terminal with Fish shell and starship prompt
+- **Editor & Tools**: Neovim configuration, modern CLI utilities, AI workflow integration
+- **Theming**: Dynamic live theme engine supporting curated dark and light aesthetics
+
+## Documentation
+
+The full Apex manual lives in [`manual/`](manual/):
 
 - [Welcome to Apex!](manual/01-welcome-to-apex.md)
 
@@ -72,6 +80,10 @@ The manual lives in [`manual/`](manual/), which is its authoritative source.
 - [Dual Boot Install](manual/50-dual-boot-install.md)
 - [Unattended Installs](manual/51-unattended-installs.md)
 
+## Third-Party Notices & Attribution
+
+See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for detailed third-party licenses and acknowledgments.
+
 ## License
 
-Apex is released under the [MIT License](https://opensource.org/licenses/MIT).
+Apex Linux is licensed under the [MIT License](LICENSE).
