@@ -29,3 +29,6 @@ Result: Upstream URLs replaced with Apex environment variables/placeholders.
 
 2026-10-03 14:04:10 | T2.5 | Audited all filesystem and variable paths across the codebase for stray upstream paths (share/omarchy, config/omarchy, state/omarchy, /usr/share/omarchy, /etc/omarchy, /var/lib/omarchy, /dev/shm/omarchy, com.omarchy, org.omarchy). Rebranded .github templates and security policy. Grep confirmed 0 stray paths remain. Ticked T2.5 in TASKS.md.
 Result: All paths consistently point to apex, 0 stray paths confirmed.
+
+2026-10-03 14:05:40 | T2.6 | Implemented tests/check-name-leaks.sh to scan codebase for any case form of old name. Verified shellcheck and bash -n pass with 0 errors. Executed test; passed with 0 name leaks across the entire codebase. Ticked T2.6 in TASKS.md.
+Result: tests/check-name-leaks.sh written, validated, and passing.
