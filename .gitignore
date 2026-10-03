@@ -1,0 +1,4 @@
+/reference/
+*.log
+*.tmp
+.DS_Store
