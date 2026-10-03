@@ -41,3 +41,6 @@ Result: All branding assets created and verified.
 
 2026-10-03 14:16:30 | T2.9 | Rewrote README.md with mandatory attribution ('Apex Linux is an independent project based on Arch Linux and inspired by Omarchy'), updated LICENSE with MIT license for Sanjjay, and created THIRD_PARTY_NOTICES.md acknowledging upstream Omarchy / 37signals. Verified tests/check-name-leaks.sh passes with 0 leaks. Ticked T2.9 in TASKS.md.
 Result: README.md, LICENSE, and THIRD_PARTY_NOTICES.md complete and verified.
+
+2026-10-03 14:19:10 | T3.1 | Created minimal, safe, and readable boot.sh. Avoids piped sudo surprises, verifies TTY interactive execution, checks Bash 5+, checks Arch Linux, checks EUID, verifies tools (git, curl), displays ANSI logo, supports --dry-run and --help. Shellcheck and check-name-leaks.sh pass with 0 errors. Ticked T3.1 in TASKS.md.
+Result: boot.sh created and verified.

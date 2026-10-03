@@ -29,7 +29,7 @@
 - [x] T2.9 Rewrite README.md and add LICENSE + THIRD_PARTY_NOTICES.md.
 
 ## STAGE 3: Installer hardening
-- [ ] T3.1 Make boot.sh minimal, safe and readable (no piped sudo surprises).
+- [x] T3.1 Make boot.sh minimal, safe and readable (no piped sudo surprises).
 - [ ] T3.2 Make every install/ stage idempotent; add the logging convention.
 - [ ] T3.3 Separate official and AUR package lists; verify every package name.
 - [ ] T3.4 Add pre-flight checks (is Arch, not root, internet, free disk, UEFI).
