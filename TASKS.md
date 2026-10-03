@@ -18,7 +18,7 @@
 - [x] T1.9 Document how the ISO is built and how the guided installer works.
 
 ## STAGE 2: Rebrand
-- [ ] T2.1 Write scripts/rebrand.sh with --dry-run (default) and --apply. It renames files/dirs and replaces text in all case forms (omarchy/Omarchy/OMARCHY -> apex/Apex/APEX). It must skip .git and reference/. Dry run prints every change.
+- [x] T2.1 Write scripts/rebrand.sh with --dry-run (default) and --apply. It renames files/dirs and replaces text in all case forms (omarchy/Omarchy/OMARCHY -> apex/Apex/APEX). It must skip .git and reference/. Dry run prints every change.
 - [ ] T2.2 Run dry-run, review the output, record surprises in DECISIONS.md.
 - [ ] T2.3 Copy upstream files into the Apex tree (excluding .git, logos, wallpapers), then run --apply.
 - [ ] T2.4 Replace upstream-owned URLs with placeholders from default/apex-env.
