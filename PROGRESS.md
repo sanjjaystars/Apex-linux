@@ -47,3 +47,6 @@ Result: boot.sh created and verified.
 
 2026-10-03 14:23:30 | T3.2 | Audited all install/ stages for idempotency and established logging convention. Implemented log_step function in install/helpers/logging.sh with timestamps, console output, and log-file output. Updated install/{config,hardware,user,login,post-install}/all.sh orchestrators with explicit step names. Shellcheck passed with 0 errors. Ticked T3.2 in TASKS.md.
 Result: install/ stages hardened for idempotency and logging convention implemented.
+
+2026-10-03 14:25:30 | T3.3 | Separated base and optional/hardware package lists into dedicated official Arch and AUR/custom sets: created install/apex-base-official.packages (131 pkgs), install/apex-base-aur.packages (28 pkgs), install/apex-other-official.packages (34 pkgs), and install/apex-other-aur.packages (23 pkgs). Reorganized install/apex-base.packages (159 total) and install/apex-other.packages (57 total) with clean section headers. Ticked T3.3 in TASKS.md.
+Result: Package lists categorized into official vs AUR and verified.

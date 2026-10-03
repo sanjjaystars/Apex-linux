@@ -1,0 +1,26 @@
+# Apex optional/hardware packages in AUR or custom repos
+# Total: 23 packages
+
+apple-bcm-firmware
+apple-t2-audio-config
+asusctl
+broadcom-wl-dkms
+dell-xps-touchpad-haptics
+dell-xps13-sidecar-amps
+intel-ipu7-camera
+intel-lpmd
+lib32-nvidia-580xx-utils
+limine-mkinitcpio-hook
+limine-snapper-sync
+linux-apex
+linux-apex-headers
+linux-firmware-marvell
+linux-t2
+linux-t2-headers
+macbook12-spi-driver-dkms
+nvidia-580xx-dkms
+nvidia-580xx-utils
+qmk-hid
+t2fanrd
+tuxedo-drivers-nocompatcheck-dkms
+yay-debug

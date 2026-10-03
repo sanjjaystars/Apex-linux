@@ -31,7 +31,7 @@
 ## STAGE 3: Installer hardening
 - [x] T3.1 Make boot.sh minimal, safe and readable (no piped sudo surprises).
 - [x] T3.2 Make every install/ stage idempotent; add the logging convention.
-- [ ] T3.3 Separate official and AUR package lists; verify every package name.
+- [x] T3.3 Separate official and AUR package lists; verify every package name.
 - [ ] T3.4 Add pre-flight checks (is Arch, not root, internet, free disk, UEFI).
 - [ ] T3.5 Add a final summary screen and a clear failure message with log path.
 - [ ] T3.6 Write tests/vm-smoke-test.sh (or document the manual procedure) for a fresh Arch VM; run it if QEMU is available.

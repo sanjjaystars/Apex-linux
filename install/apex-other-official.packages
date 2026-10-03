@@ -1,0 +1,37 @@
+# Apex optional/hardware packages in official Arch repositories
+# Total: 34 packages
+
+autoconf-archive
+base
+base-devel
+btrfs-progs
+dkms
+egl-wayland
+gst-plugin-pipewire
+gtk4-layer-shell
+intel-media-driver
+lib32-nvidia-utils
+libpulse
+libva-intel-driver
+libva-nvidia-driver
+libvpl
+limine
+linux-firmware
+lsp-plugins-lv2
+nvidia-dkms
+nvidia-open-dkms
+nvidia-utils
+pipewire
+pipewire-alsa
+pipewire-jack
+pipewire-pulse
+qt6-wayland
+snapper
+sof-firmware
+thermald
+vpl-gpu-rt
+vulkan-asahi
+vulkan-intel
+vulkan-radeon
+webp-pixbuf-loader
+zram-generator

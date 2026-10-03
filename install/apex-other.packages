@@ -1,36 +1,29 @@
 # Packages installed outside of install/packages.sh or optional packages
 # Utilized by ISO builder to ensure package availability in the ISO
 
+# ==========================================
+# Arch Linux Official Repository Packages
+# ==========================================
 autoconf-archive
-asusctl
 base
 base-devel
-broadcom-wl-dkms
 btrfs-progs
 dkms
 egl-wayland
 gst-plugin-pipewire
 gtk4-layer-shell
-libpulse
-intel-ipu7-camera
-intel-lpmd
 intel-media-driver
+lib32-nvidia-utils
+libpulse
 libva-intel-driver
 libva-nvidia-driver
+libvpl
 limine
-limine-mkinitcpio-hook
-limine-snapper-sync
 linux-firmware
-linux-apex
-linux-apex-headers
-macbook12-spi-driver-dkms
-nvidia-580xx-dkms
+lsp-plugins-lv2
 nvidia-dkms
 nvidia-open-dkms
-nvidia-580xx-utils
 nvidia-utils
-lib32-nvidia-580xx-utils
-lib32-nvidia-utils
 pipewire
 pipewire-alsa
 pipewire-jack
@@ -39,36 +32,36 @@ qt6-wayland
 snapper
 sof-firmware
 thermald
-webp-pixbuf-loader
-yay-debug
-tuxedo-drivers-nocompatcheck-dkms
-zram-generator
-
-# Intel encoding processing
-libvpl
 vpl-gpu-rt
-
-# Vulkan drivers (auto-detected by hardware)
+vulkan-asahi
 vulkan-intel
 vulkan-radeon
-vulkan-asahi
+webp-pixbuf-loader
+zram-generator
 
-# Surface laptop support packages
-linux-firmware-marvell
-
-# Dell laptop support packages
-dell-xps-touchpad-haptics
-dell-xps13-sidecar-amps
-
-# Speaker tunings (LV2 limiter every tuning ends in)
-lsp-plugins-lv2
-
-# T2 MacBook support packages
+# ==========================================
+# AUR and Custom Packages
+# ==========================================
 apple-bcm-firmware
 apple-t2-audio-config
+asusctl
+broadcom-wl-dkms
+dell-xps-touchpad-haptics
+dell-xps13-sidecar-amps
+intel-ipu7-camera
+intel-lpmd
+lib32-nvidia-580xx-utils
+limine-mkinitcpio-hook
+limine-snapper-sync
+linux-apex
+linux-apex-headers
+linux-firmware-marvell
 linux-t2
 linux-t2-headers
-t2fanrd
-
-# Framework 16
+macbook12-spi-driver-dkms
+nvidia-580xx-dkms
+nvidia-580xx-utils
 qmk-hid
+t2fanrd
+tuxedo-drivers-nocompatcheck-dkms
+yay-debug

@@ -1,9 +1,6 @@
-# Apex core package list pacstrapped by the ISO.
-# The ISO builder also reads this file when constructing the offline mirror.
+# Apex official Arch Linux packages (available in standard core/extra repositories)
+# Total: 131 packages
 
-# ==========================================
-# Arch Linux Official Repository Packages
-# ==========================================
 alsa-utils
 avahi
 base-devel
@@ -135,35 +132,3 @@ yaru-icon-theme
 yt-dlp
 zbar
 zoxide
-
-# ==========================================
-# AUR and Custom Packages
-# ==========================================
-aether
-apex-nvim
-asdcontrol
-cliamp
-gpu-screen-recorder
-herdr
-hype
-hyprland-guiutils
-hyprland-preview-share-picker
-lazydocker
-localsend
-mise-bin
-monologue
-obsidian
-omacalc
-omacut
-omasnap
-omawrite
-owe
-owe-lockfeed
-quickshell
-tobi-try
-ttf-ia-writer
-ttf-jetbrains-mono-nerd-basic
-ttfx
-tzupdate
-ufw-docker
-yay
