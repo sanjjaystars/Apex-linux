@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# apex:summary=Toggle the current weather panel
+
+apex-shell shell toggle apex.weather

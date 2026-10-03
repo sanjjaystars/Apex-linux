@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# apex:summary=Edit, set, or reset screensaver branding
+# apex:group=branding
+# apex:name=screensaver
+# apex:args=<image|text|reset>
+# apex:examples=apex branding screensaver image | apex branding screensaver text | apex branding screensaver reset
+
+set -euo pipefail
+
+case "${1:-}" in
+image)
+  image=$(apex-file-select --title "Pick PNG or SVG for screensaver" --extensions "png svg")
+  if apex-transcode-ascii "$image" ~/.config/apex/branding/screensaver.txt; then
+    apex-launch-screensaver force >/dev/null 2>&1
+  fi
+  ;;
+text)
+  apex-launch-editor ~/.config/apex/branding/screensaver.txt >/dev/null 2>&1 && apex-launch-screensaver force >/dev/null 2>&1
+  ;;
+reset)
+  cp "$APEX_PATH/logo.txt" ~/.config/apex/branding/screensaver.txt && apex-launch-screensaver force >/dev/null 2>&1
+  ;;
+*)
+  echo "Usage: apex-branding-screensaver <image|text|reset>" >&2
+  exit 1
+  ;;
+esac

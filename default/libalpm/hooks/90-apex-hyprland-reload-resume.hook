@@ -1,0 +1,12 @@
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = apex-settings
+Target = apex-settings-dev
+
+[Action]
+Description = Reloading Hyprland after Apex settings update...
+When = PostTransaction
+Depends = apex
+Exec = /usr/bin/apex-hyprland-reload-guard resume

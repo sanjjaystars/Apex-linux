@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# apex:summary=Ensure default application launchers and mise wrappers are installed.
+
+# Copy .desktop declarations
+mkdir -p ~/.local/share/applications
+cp "$APEX_PATH"/applications/*.desktop ~/.local/share/applications/
+
+if apex-cmd-present alacritty; then
+  cp "$APEX_PATH/default/alacritty/Alacritty.desktop" ~/.local/share/applications/
+fi
+
+if [[ -f "$APEX_PATH/install/user/mise.sh" ]]; then
+  bash "$APEX_PATH/install/user/mise.sh"
+fi
+
+update-desktop-database ~/.local/share/applications

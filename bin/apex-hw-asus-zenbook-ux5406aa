@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# apex:summary=Detect ASUS Zenbook UX5406AA series laptops on Intel Panther Lake.
+
+apex-hw-match "ux5406aa" && apex-hw-intel-ptl

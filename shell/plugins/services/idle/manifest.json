@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "apex.idle",
+  "name": "Idle",
+  "version": "1.0.0",
+  "author": "Apex",
+  "description": "Quickshell-based idle detection for screensaver, lock, and display wake.",
+  "kinds": [
+    "service"
+  ],
+  "keepLoaded": true,
+  "entryPoints": {
+    "service": "Service.qml"
+  }
+}

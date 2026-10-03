@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# apex:summary=Choose which Claude, Codex, or Grok account new sessions use
+# apex:args=[claude|codex|grok] [account|next]
+# apex:examples=apex agent account use work | apex agent account use main | apex agent account use codex next
+
+set -uo pipefail
+
+# The provider can be left out when it's your default agent:
+# `apex agent account use work`.
+if [[ ${1:-} != "claude" && ${1:-} != "codex" && ${1:-} != "grok" ]]; then
+  default=$(apex-default-agent)
+  [[ $default == "claude" || $default == "codex" || $default == "grok" ]] && set -- "$default" "$@"
+fi
+
+case "${1:-}" in
+claude) name="Claude" ;;
+codex) name="Codex" ;;
+grok) name="Grok" ;;
+*)
+  echo "Usage: apex-agent-account-use [claude|codex|grok] [account|next]" >&2
+  exit 1
+  ;;
+esac
+
+result=$(apex-agent-account-state use "$1" "${2:-next}") || exit 1
+
+previous=$(jq -r .previous.label <<<"$result")
+active=$(jq -r '.active.label + (if (.active.plan // "") != "" then " (" + .active.plan + ")" else "" end)' <<<"$result")
+
+if [[ $(jq -r .previous.id <<<"$result") == "$(jq -r .active.id <<<"$result")" ]]; then
+  echo "New $name sessions already use $active."
+else
+  message="Running sessions stay on $previous."
+  echo "New $name sessions now use $active. $message"
+  apex-notification-send -g 󰚩 "New $name sessions now use $active" "$message"
+  # The usage record's own limits describe the active account.
+  apex-agent-usage-update --limits-only "$1" >/dev/null 2>&1 &
+fi

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# apex:summary=Cache background switcher thumbnails for the current theme
+
+theme_name=$(cat "$HOME/.local/state/apex/current/theme.name" 2>/dev/null)
+
+apex-menu-images \
+  --cache-only \
+  "$HOME/.local/state/apex/current/theme/backgrounds" \
+  "$HOME/.config/apex/backgrounds/$theme_name"

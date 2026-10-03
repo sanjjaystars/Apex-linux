@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# apex:summary=Show which theme is styling the Plymouth boot screen
+# apex:examples=apex plymouth current
+
+# apex-plymouth-set installs the theme's unlock.png as a byte-for-byte
+# copy of logo.png, so matching it back identifies the current theme.
+installed_logo=/usr/share/plymouth/themes/apex/logo.png
+
+if cmp -s "$APEX_PATH/default/plymouth/logo.png" "$installed_logo"; then
+  echo default
+  exit
+fi
+
+apex-plymouth-list | while read -r name; do
+  if cmp -s "$(apex-theme-dir "$name")/unlock.png" "$installed_logo"; then
+    echo "$name"
+    exit
+  fi
+done

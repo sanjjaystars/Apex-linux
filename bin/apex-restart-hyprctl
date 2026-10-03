@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# apex:summary=Reload hyprland configuration (used by the Apex theme switching).
+
+hyprctl reload >/dev/null

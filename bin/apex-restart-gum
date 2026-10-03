@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# apex:summary=Export the current theme's gum styling into the environment
+# apex:hidden=true
+
+# Meant to be sourced. gum_env.lua is fed into the compositor environment via
+# hl.env at login, but that environment is captured once and is not refreshed on
+# a theme switch, so anything launched from the session would otherwise inherit
+# the login-time theme's gum colors. Export the current values instead.
+_apex_gum_env="$HOME/.local/state/apex/current/theme/gum_env.lua"
+
+if [[ -f $_apex_gum_env ]]; then
+  while IFS=$'\t' read -r _apex_gum_key _apex_gum_value; do
+    [[ -n $_apex_gum_key && -n $_apex_gum_value ]] && export "$_apex_gum_key=$_apex_gum_value"
+  done < <(awk -F'"' '/hl\.env\("[A-Z0-9_]+", "[^"]+"\)/ { print $2 "\t" $4 }' "$_apex_gum_env")
+fi
+
+unset _apex_gum_env _apex_gum_key _apex_gum_value

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# apex:summary=Enable, disable, or toggle the touchpad
+# apex:args=[on|off|toggle]
+
+exec apex-toggle-input-device touchpad "${1:-toggle}"

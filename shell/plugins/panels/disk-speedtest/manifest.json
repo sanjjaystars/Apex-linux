@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "apex.disk-speedtest",
+  "name": "Disk speed test",
+  "version": "1.0.0",
+  "author": "Apex",
+  "description": "Live disk write and read speed dials. Summon with: apex-shell shell summon apex.disk-speedtest",
+  "kinds": [
+    "panel"
+  ],
+  "entryPoints": {
+    "panel": "Panel.qml"
+  }
+}

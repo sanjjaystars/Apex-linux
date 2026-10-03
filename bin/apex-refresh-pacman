@@ -1,0 +1,50 @@
+#!/bin/bash -p
+
+# apex:summary=Overwrite the package configuration for /etc/pacman with the Apex default of using its dedicated mirrors and repositories, then update all packages.
+# apex:requires-sudo=true
+
+if [[ $- != *p* ]]; then
+  echo "Refusing an unsafe Bash startup." >&2
+  exit 126
+fi
+
+security_entrypoint=$(/usr/bin/readlink -e -- "${BASH_SOURCE[0]}") || exit 126
+source "${security_entrypoint%/*}/apex-security-functions" || exit 126
+apex_security_require_privileged_bash_startup || exit 126
+set -e
+apex_security_sanitize_bash_environment "$0" "$@"
+apex_security_require_source_root "$0"
+# Channel switching calls this behind its own sanitized PATH and hands the
+# caller's original path over the same way the updater receives it.
+user_path=${APEX_UPDATE_USER_PATH:-$PATH}
+unset APEX_UPDATE_USER_PATH
+# Traps first, so a signal or failure during the entry revocation still
+# exits through the cleanup path.
+apex_security_install_sudo_cleanup_traps
+apex_security_revoke_sudo_timestamp || exit 1
+apex_security_enable_no_update_sudo
+
+channel="${1:-stable}"
+if [[ $channel != "stable" && $channel != "rc" && $channel != "edge" ]]; then
+  echo "Invalid channel: $channel" >&2
+  exit 2
+fi
+
+sudo cp -f /etc/pacman.conf /etc/pacman.conf.bak
+sudo cp -f /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
+echo "Setting channel to $channel"
+sudo cp -f "$APEX_PATH/default/pacman/pacman-$channel.conf" /etc/pacman.conf
+sudo cp -f "$APEX_PATH/default/pacman/mirrorlist-$channel" /etc/pacman.d/mirrorlist
+
+# Allow user customization of /etc/pacman.conf before the upgrade runs, so
+# custom repositories and IgnorePkg entries shape the downgrade-capable
+# transaction below. The hook is user code: it runs cold behind the no-update
+# wrapper, and the timestamp is revoked again afterwards so any authorization
+# the hook obtained for itself cannot carry into the transaction.
+apex_security_revoke_sudo_timestamp
+PATH="$APEX_PATH/default/apex/sudo-no-update:$user_path" \
+  "$APEX_PATH/bin/apex-hook" pre-refresh-pacman
+apex_security_revoke_sudo_timestamp
+
+# Reset all package DBs and then update
+apex-update-pacman -Syyuu --noconfirm

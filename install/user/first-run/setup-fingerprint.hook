@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+
+# Only invite when there's a reader to use and it isn't set up yet (the lock
+# PAM file is the last thing the setup writes on success).
+if apex-hw-fingerprint && [[ ! -f /etc/pam.d/apex-lock-fingerprint ]] &&
+  apex-done ensure fingerprint-setup-invitation; then
+  apex-notification-send -u critical -g 󰈷 "Setup Fingerprint Reader" \
+    "Enable sudo and unlocking with your fingerprint." \
+    --exec apex-launch-floating-terminal-with-presentation apex-setup-security-fingerprint
+fi

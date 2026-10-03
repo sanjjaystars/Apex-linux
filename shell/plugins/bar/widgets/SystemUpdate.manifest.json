@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "apex.system-update",
+  "name": "Apex update",
+  "version": "1.0.0",
+  "author": "Apex",
+  "description": "Indicates available Apex updates",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "SystemUpdate.qml"
+  },
+  "barWidget": {
+    "displayName": "Apex update",
+    "description": "Indicates available Apex updates",
+    "category": "System",
+    "allowMultiple": false
+  }
+}

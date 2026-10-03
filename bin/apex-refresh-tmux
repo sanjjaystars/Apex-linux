@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# apex:summary=Overwrite the user tmux config with the Apex default and reload tmux.
+
+apex-refresh-config tmux/tmux.conf
+apex-restart-tmux

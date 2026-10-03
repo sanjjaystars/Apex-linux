@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# apex:summary=Restart the hyprsunset service (used for blue light filtering/night light).
+
+apex-restart-app hyprsunset

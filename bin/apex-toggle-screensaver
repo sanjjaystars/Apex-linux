@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# apex:summary=Toggle screensaver availability
+
+apex-toggle screensaver-off
+
+if apex-toggle-enabled screensaver-off; then
+  apex-notification-send -g 󱄄 "Screensaver disabled"
+else
+  apex-notification-send -g 󱄄 "Screensaver enabled"
+fi

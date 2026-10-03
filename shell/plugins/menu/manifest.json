@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "apex.menu",
+  "name": "Apex menu",
+  "version": "1.0.0",
+  "author": "Apex",
+  "description": "Quickshell-powered Apex command menu",
+  "kinds": [
+    "menu",
+    "bar-widget"
+  ],
+  "keepLoaded": true,
+  "entryPoints": {
+    "menu": "Menu.qml",
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "Apex menu",
+    "description": "Launches the Apex menu",
+    "category": "Compositor",
+    "allowMultiple": false
+  }
+}

@@ -20,7 +20,7 @@
 ## STAGE 2: Rebrand
 - [x] T2.1 Write scripts/rebrand.sh with --dry-run (default) and --apply. It renames files/dirs and replaces text in all case forms (omarchy/Omarchy/OMARCHY -> apex/Apex/APEX). It must skip .git and reference/. Dry run prints every change.
 - [x] T2.2 Run dry-run, review the output, record surprises in DECISIONS.md.
-- [ ] T2.3 Copy upstream files into the Apex tree (excluding .git, logos, wallpapers), then run --apply.
+- [x] T2.3 Copy upstream files into the Apex tree (excluding .git, logos, wallpapers), then run --apply.
 - [ ] T2.4 Replace upstream-owned URLs with placeholders from default/apex-env.
 - [ ] T2.5 Fix every path (~/.local/share/apex etc.) consistently. Grep to prove there are zero stray old paths.
 - [ ] T2.6 Write tests/check-name-leaks.sh that fails if any case form of the old name remains anywhere except THIRD_PARTY_NOTICES.md. Run it; it must pass.

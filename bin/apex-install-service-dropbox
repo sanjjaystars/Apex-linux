@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# apex:summary=Install and start the Dropbox service. Must then be authenticated via the web.
+# apex:requires-sudo=true
+
+echo "Installing all dependencies..."
+apex-pkg-add dropbox dropbox-cli libappindicator-gtk3 python-gpgme nautilus-dropbox
+
+echo "Adding Dropbox to the bar..."
+apex-plugin-enable apex.dropbox
+
+echo "Starting Dropbox..."
+uwsm-app -- dropbox-cli start &>/dev/null &
+echo "See Dropbox icon behind  hover tray in top right and right-click for setup."

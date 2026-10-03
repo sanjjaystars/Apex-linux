@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# apex:summary=Update the active Apex dev checkout
+
+set -euo pipefail
+
+[[ $APEX_PATH != "/usr/share/apex" ]] || exit 0
+
+if ! git -C "$APEX_PATH" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  echo "Error: APEX_PATH is not a git checkout: $APEX_PATH" >&2
+  exit 1
+fi
+
+upstream=$(git -C "$APEX_PATH" rev-parse --abbrev-ref --symbolic-full-name '@{upstream}' 2>/dev/null || true)
+if [[ -z $upstream ]]; then
+  echo -e "\e[33m\nSkip Apex dev checkout update (current branch has no upstream)\e[0m"
+  exit 0
+fi
+
+echo -e "\e[32m\nUpdate Apex dev checkout\e[0m"
+git -C "$APEX_PATH" pull --ff-only

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# apex:summary=Open Voxtype configuration
+
+set -e
+
+apex-launch-floating-terminal-with-presentation "voxtype configure"
+apex-restart-shell

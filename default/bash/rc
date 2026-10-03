@@ -1,0 +1,7 @@
+: "${APEX_PATH:=/usr/share/apex}"
+source "$APEX_PATH/default/bash/envs"
+source "$APEX_PATH/default/bash/shell"
+source "$APEX_PATH/default/bash/aliases"
+source "$APEX_PATH/default/bash/functions"
+source "$APEX_PATH/default/bash/init"
+[[ $- == *i* ]] && bind -f "$APEX_PATH/default/bash/inputrc"

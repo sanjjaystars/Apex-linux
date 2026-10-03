@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# apex:summary=Open the Apex Discord community in the Discord app or a browser.
+
+invite="https://discord.gg/tXFUdasqhY"
+
+if apex-cmd-present discord; then
+  exec setsid uwsm-app -- discord --url -- "discord://-/invite/${invite##*/}"
+else
+  exec apex-launch-webapp "$invite"
+fi

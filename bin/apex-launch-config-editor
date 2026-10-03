@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# apex:summary=Open a config file in the user's editor and surface a toast
+# apex:args=<path>
+# apex:examples=apex launch config-editor ~/.config/hypr/hyprland.lua
+
+path="${1-}"
+
+if [[ -z $path ]]; then
+  echo "Usage: apex-launch-config-editor <path>" >&2
+  exit 1
+fi
+
+apex-notification-send -u low "Editing config file" "$path"
+exec apex-launch-editor "$path"

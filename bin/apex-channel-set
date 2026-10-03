@@ -1,0 +1,150 @@
+#!/bin/bash -p
+
+# apex:summary=Set the Apex package channel.
+# apex:args=<stable|rc|edge|dev>
+# apex:requires-sudo=true
+
+if [[ $- != *p* ]]; then
+  echo "Refusing an unsafe Bash startup for channel switching." >&2
+  exit 126
+fi
+security_entrypoint=$(/usr/bin/readlink -e -- "${BASH_SOURCE[0]}") || exit 126
+source "${security_entrypoint%/*}/apex-security-functions" || exit 126
+apex_security_require_privileged_bash_startup || exit 126
+set -euo pipefail
+apex_security_sanitize_bash_environment "$0" "$@"
+apex_security_require_source_root "$0"
+user_path=$PATH
+# Traps first, so a signal or failure during the entry revocation still
+# exits through the cleanup path.
+apex_security_install_sudo_cleanup_traps
+apex_security_revoke_sudo_timestamp || exit 1
+apex_security_enable_no_update_sudo
+
+usage() { echo "Usage: apex-channel-set [stable|rc|edge|dev]"; }
+fail() { echo "Error: $*" >&2; exit 1; }
+
+confirm_dev() {
+  cat <<'WARNING'
+
+The dev channel links Apex directly to a checkout of the source in ~/apex.
+It's exclusively intended for developers working on Apex itself.
+
+WARNING
+
+  gum confirm --default=false "Switch to dev channel?"
+}
+
+validate_dev_checkout() {
+  local checkout="$1"
+
+  if [[ -e $checkout && ! -d $checkout/.git ]]; then
+    fail "$checkout already exists and is not a git checkout."
+  fi
+
+  if [[ -d $checkout/.git && ( ! -d $checkout/bin || ! -d $checkout/default || ! -d $checkout/shell ) ]]; then
+    fail "$checkout is a git checkout, but it does not look like Apex."
+  fi
+}
+
+link_dev_checkout() {
+  local checkout="$1" required
+  [[ -d $checkout/.git ]] || git clone https://github.com/omacom/apex.git "$checkout"
+
+  # Check the destination before changing /etc/apex.conf or sudo's path.
+  # An existing checkout is not pulled automatically and may predate this policy.
+  for required in bin/apex-security-functions bin/apex-update bin/apex-refresh-pacman default/apex/sudo-no-update/sudo; do
+    if [[ ! -f $checkout/$required || ! -r $checkout/$required ||
+      ( $required != "bin/apex-security-functions" && ! -x $checkout/$required ) ]]; then
+      fail "Update the checkout before switching to dev; missing required update support in $required."
+    fi
+  done
+
+  apex-dev-link "$checkout" --no-reboot
+}
+
+# A packaged destination cannot be inspected before its package is installed,
+# and a package transaction can replace the running tree with a release that
+# predates the command-scoped wrapper. After that, a bare sudo would resolve to
+# /usr/bin/sudo and publish a timestamp, and the destination's own updater
+# authenticates the same way. Neither may run from a flow that has just run
+# user hooks: stop at a consistent point and say how to finish from a fresh
+# session.
+stop_for_older_destination() {
+  cat >&2 <<EOF
+The destination predates command-scoped sudo, so this switch stops before its update.
+Packages are switched. Run 'apex update' from a new terminal to finish, then reboot if prompted.
+EOF
+  exit 3
+}
+
+wrapper_present() {
+  [[ -f $APEX_PATH/default/apex/sudo-no-update/sudo && -x $APEX_PATH/default/apex/sudo-no-update/sudo ]]
+}
+
+(( $# > 0 )) || { usage; exit 1; }
+
+dev_checkout=""
+channel="$1"
+leaving_dev=0
+
+case "$channel" in
+  stable)
+    pacman_channel=stable
+    packages=(apex apex-settings)
+    ;;
+  rc)
+    pacman_channel=rc
+    packages=(apex apex-settings)
+    ;;
+  edge)
+    pacman_channel=edge
+    packages=(apex-dev apex-settings-dev)
+    ;;
+  dev)
+    confirm_dev || { echo "Cancelled."; exit 0; }
+    dev_checkout="$HOME/apex"
+    validate_dev_checkout "$dev_checkout"
+    pacman_channel=edge
+    packages=(apex-dev apex-settings-dev)
+    ;;
+  *)
+    echo "Unknown channel: $channel" >&2
+    usage >&2
+    exit 1
+    ;;
+esac
+
+# A failure past this point leaves the channel switch half-applied, so say how
+# to pick it back up rather than dying silently under set -e.
+trap 'echo -e "\nThe channel switch did not complete. Review the error above, then rerun: apex-channel-set '"$channel"'" >&2' ERR
+
+if [[ -z $dev_checkout && $APEX_PATH != "/usr/share/apex" ]]; then
+  leaving_dev=1
+fi
+
+if [[ -n $dev_checkout ]]; then
+  link_dev_checkout "$dev_checkout"
+  export APEX_PATH="$dev_checkout"
+  apex_security_enable_no_update_sudo
+  apex-state set reboot-required
+fi
+
+APEX_UPDATE_USER_PATH="$user_path" apex-refresh-pacman "$pacman_channel"
+# Each transaction can have replaced this tree; check before the next sudo.
+wrapper_present || stop_for_older_destination
+# --ask 4 accepts apex <-> apex-dev replacement prompts without file overwrites.
+apex-update-pacman -S --needed --noconfirm --ask 4 "${packages[@]}"
+wrapper_present || stop_for_older_destination
+
+if [[ -z $dev_checkout ]]; then
+  apex-dev-unlink --no-reboot
+  export APEX_PATH=/usr/share/apex
+
+  if (( leaving_dev )); then
+    apex-state set reboot-required
+  fi
+  apex_security_enable_no_update_sudo 2>/dev/null || stop_for_older_destination
+fi
+
+APEX_UPDATE_USER_PATH="$user_path" "$APEX_PATH/bin/apex-update" -y

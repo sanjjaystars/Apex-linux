@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# apex:summary=Display the Apex logo in the terminal using green color.
+
+clear
+echo -e "\033[32m"
+cat <$APEX_PATH/logo.txt
+echo -e "\033[0m"
+echo

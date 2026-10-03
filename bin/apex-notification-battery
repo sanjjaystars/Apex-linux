@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# apex:summary=Show the current battery status notification
+
+apex-notification-send -g 󰁹 -u low "$(apex-battery-status)"

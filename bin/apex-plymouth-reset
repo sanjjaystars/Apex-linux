@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# apex:summary=Restore the default Apex Plymouth boot theme and SDDM login screen
+# apex:requires-sudo=true
+
+set -euo pipefail
+
+"$APEX_PATH/bin/apex-refresh-plymouth"
+"$APEX_PATH/bin/apex-refresh-sddm"

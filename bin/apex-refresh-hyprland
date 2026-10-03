@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# apex:summary=Overwrite all the user Hyprland Lua configs in ~/.config/hypr with the Apex defaults.
+
+apex-refresh-config hypr/.luarc.json
+apex-refresh-config hypr/autostart.lua
+apex-refresh-config hypr/bindings.lua
+apex-refresh-config hypr/input.lua
+apex-refresh-config hypr/looknfeel.lua
+apex-refresh-config hypr/hyprland.lua
+apex-refresh-config hypr/monitors.lua
+
+mkdir -p ~/.local/state/apex/toggles/hypr
+cp "$APEX_PATH/default/hypr/toggles/flags.lua" ~/.local/state/apex/toggles/hypr/

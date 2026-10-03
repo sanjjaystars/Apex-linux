@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# apex:summary=Apply the current theme keyboard color to supported keyboards
+# apex:hidden=true
+
+apex-theme-set-keyboard-asus-rog
+apex-theme-set-keyboard-f16

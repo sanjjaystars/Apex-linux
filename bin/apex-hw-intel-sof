@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# apex:summary=Detect an Intel SOF-capable audio DSP
+
+lspci | grep -qiE '(Multimedia audio controller|Audio device).*Intel'

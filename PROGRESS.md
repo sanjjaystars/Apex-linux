@@ -20,3 +20,6 @@ Result: scripts/rebrand.sh written, validated, and tested.
 
 2026-10-03 13:53:10 | T2.2 | Executed dry-run review against reference/omarchy. Analyzed 1,323 files flagged for content replacement and 564 items flagged for renaming. Noted findings in DECISIONS.md: wallpaper exclusions, URL translations, env var safety, and binary protection. Ticked T2.2 in TASKS.md.
 Result: Dry-run reviewed and documented in DECISIONS.md.
+
+2026-10-03 13:58:35 | T2.3 | Copied 1,879 upstream files into the Apex tree across 273 directories, excluding .git, logos, and wallpapers. Executed scripts/rebrand.sh --apply: renamed 543 files/directories (including all 479 commands in bin/ to apex-*) and updated content across 1,323 files. Ticked T2.3 in TASKS.md.
+Result: Upstream codebase copied and rebranded to Apex.

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# apex:summary=Check if a Hyprland toggle is currently disabled (missing).
+# apex:args=<flag-name>
+
+[[ ! -f "$HOME/.local/state/apex/toggles/hypr/$1.lua" ]]

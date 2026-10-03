@@ -1,0 +1,11 @@
+[Trigger]
+Operation = Upgrade
+Type = Package
+Target = *
+
+[Action]
+Description = Checking Apex update entrypoint...
+When = PreTransaction
+Depends = apex
+Exec = /usr/bin/apex-update-pacman-guard
+AbortOnFail

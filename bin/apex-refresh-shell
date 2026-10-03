@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# apex:summary=Reset shell.json to Apex defaults
+# apex:examples=apex refresh shell
+
+set -euo pipefail
+
+apex-refresh-config apex/shell.json
+apex-bar defaults
+
+apex-restart-shell

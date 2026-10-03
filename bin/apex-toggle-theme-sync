@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# apex:summary=Toggle mirroring theme changes to and from your herdr machines
+
+apex-toggle herdr-theme-sync
+
+if apex-toggle-enabled herdr-theme-sync; then
+  apex-notification-send -g 󰸌 "Herdr theme sync enabled"
+else
+  apex-notification-send -g 󰸌 "Herdr theme sync disabled"
+fi

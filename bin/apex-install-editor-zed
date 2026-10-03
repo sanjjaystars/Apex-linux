@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# apex:summary=Install Zed Editor and configure it with the current Apex theme
+
+echo "Installing Zed Editor..."
+apex-pkg-add zed omazed
+
+# Apply Apex theme to Zed
+omazed setup
+
+setsid uwsm-app -- gtk-launch dev.zed.Zed >/dev/null 2>&1 &

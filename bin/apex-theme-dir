@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# apex:summary=Print the directory holding a theme, preferring a user-installed copy
+# apex:args=<theme-name>
+# apex:examples=apex theme dir tokyo-night
+
+theme="${1:-}"
+
+if [[ -z $theme ]]; then
+  echo "Usage: apex-theme-dir <theme-name>" >&2
+  exit 1
+fi
+
+if [[ -d $HOME/.config/apex/themes/$theme ]]; then
+  echo "$HOME/.config/apex/themes/$theme"
+else
+  echo "$APEX_PATH/themes/$theme"
+fi

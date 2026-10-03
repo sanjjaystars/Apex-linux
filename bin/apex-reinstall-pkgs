@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# apex:summary=Reinstall all default Apex packages from the stable channel
+# apex:requires-sudo=true
+
+set -e
+
+# Reinstall all default Apex packages from the stable channel and downgrade any packages that are too new.
+
+# Set the package repository to the stable mirrors
+apex-refresh-pacman
+
+# Downgrade any packages to the stable setup
+apex-update-pacman -Suu --noconfirm
+
+# Ensure all packages are installed
+mapfile -t packages < <(grep -v '^#' "$APEX_PATH/install/apex-base.packages" | grep -v '^$')
+apex-update-pacman -Syu --noconfirm --needed "${packages[@]}"

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# apex:summary=Cycle to the next media source and transfer playback when the current source is playing
+# apex:args=[next|previous]
+# apex:examples=apex audio source switch | apex-audio-source-switch previous
+
+direction="${1:-next}"
+
+case "$direction" in
+  next)
+    apex-shell media sourceSwitch
+    ;;
+  previous)
+    apex-shell media sourceSwitchPrevious
+    ;;
+  *)
+    echo "Usage: apex-audio-source-switch [next|previous]" >&2
+    exit 1
+    ;;
+esac

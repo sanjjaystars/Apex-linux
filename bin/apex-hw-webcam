@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# apex:summary=Check whether a webcam is available
+
+[[ -n $(apex-capture-webcam-list) ]]

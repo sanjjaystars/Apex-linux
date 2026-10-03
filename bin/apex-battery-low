@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# apex:summary=Send the low battery warning notification and run battery-low hooks.
+# apex:args=<percentage>
+# apex:hidden=true
+
+set -euo pipefail
+
+if (($# != 1)); then
+  echo "Usage: apex-battery-low <percentage>" >&2
+  exit 1
+fi
+
+level=$1
+
+apex-notification-send -g 󱐋 -u critical "Time to recharge!" "Battery is down to ${level}%" -i battery-caution -t 30000
+apex-hook battery-low "$level"

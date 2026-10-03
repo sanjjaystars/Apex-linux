@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# apex:summary=Open the Apex background switcher
+# apex:group=theme
+# apex:name=bg-switcher
+# apex:aliases=apex background
+
+theme_name=$(cat "$HOME/.local/state/apex/current/theme.name" 2>/dev/null)
+current_background=$(readlink -f "$HOME/.local/state/apex/current/background" 2>/dev/null)
+
+apex-menu-images \
+  --selected "$current_background" \
+  "$HOME/.local/state/apex/current/theme/backgrounds" \
+  "$HOME/.config/apex/backgrounds/$theme_name"

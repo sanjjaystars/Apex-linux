@@ -1,0 +1,12 @@
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = apex-settings
+Target = apex-settings-dev
+
+[Action]
+Description = Pausing Hyprland config auto-reload for Apex settings update...
+When = PreTransaction
+Depends = apex
+Exec = /usr/bin/apex-hyprland-reload-guard pause

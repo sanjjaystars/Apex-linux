@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# apex:summary=List themes that can style the Plymouth boot screen
+# apex:examples=apex plymouth list
+
+{
+  find ~/.config/apex/themes/ -mindepth 1 -maxdepth 1 \( -type d -o -type l \) -printf '%f\n' 2>/dev/null
+  find "$APEX_PATH/themes/" -mindepth 1 -maxdepth 1 -type d -printf '%f\n'
+} | sort -u | while read -r name; do
+  if [[ -f $(apex-theme-dir "$name")/preview-unlock.png ]]; then
+    echo "$name"
+  fi
+done

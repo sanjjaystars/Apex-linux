@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# apex:summary=Print the active Apex dev-link git branch
+# apex:hidden=true
+
+apex_path=${APEX_PATH:-/usr/share/apex}
+apex_path=${apex_path%/}
+
+[[ $apex_path != "/usr/share/apex" ]] || exit 1
+
+branch=$(git -C "$apex_path" branch --show-current 2>/dev/null || true)
+if [[ -z $branch ]]; then
+  hash=$(git -C "$apex_path" rev-parse --short HEAD 2>/dev/null || true)
+  [[ -n $hash ]] || exit 1
+  branch="detached@$hash"
+fi
+
+echo "$branch"

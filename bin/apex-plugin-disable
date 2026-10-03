@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# apex:summary=Disable a shell plugin
+# apex:group=plugin
+# apex:args=<id>
+
+set -euo pipefail
+
+fail() {
+  echo "apex-plugin-disable: $*" >&2
+  exit 1
+}
+
+if [[ ${1:-} == "-h" || ${1:-} == "--help" ]]; then
+  echo "Usage: apex plugin disable <id>"
+  exit 0
+fi
+
+id="${1:-}"
+[[ -n $id ]] || fail "plugin id is required"
+
+result=$(apex-shell shell setPluginEnabled "$id" false)
+[[ $result == "ok" ]] ||
+  fail "plugin '$id' is not known; run: apex-shell shell rescanPlugins"
+
+echo "Disabled $id"

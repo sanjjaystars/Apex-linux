@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# apex:summary=Print the installed Apex version
+
+apex_path=${APEX_PATH:-/usr/share/apex}
+apex_path=${apex_path%/}
+
+if [[ $apex_path != "/usr/share/apex" ]]; then
+  hash=$(git -C "$apex_path" rev-parse --short HEAD 2>/dev/null || true)
+
+  if [[ -n $hash ]]; then
+    echo "dev ($hash)"
+  else
+    echo "dev"
+  fi
+
+  exit 0
+fi
+
+# The edge channel installs apex-dev instead of apex, so check both.
+for package in apex-dev apex; do
+  version=$(pacman -Q "$package" 2>/dev/null | awk '{ print $2 }')
+  [[ -n $version ]] && break
+done
+
+[[ -n $version ]] || exit 1
+
+echo "$version"

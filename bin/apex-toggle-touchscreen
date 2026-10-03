@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# apex:summary=Enable, disable, or toggle the touch functionality of the screen
+# apex:args=[on|off|toggle]
+
+exec apex-toggle-input-device touchscreen "${1:-toggle}"

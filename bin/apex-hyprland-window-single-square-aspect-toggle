@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# apex:summary=Toggle single-window square aspect ratio.
+
+case $(apex-hyprland-toggle single-window-aspect-ratio) in
+  on) apex-notification-send -g  "Enable single-window square aspect ratio" ;;
+  off) apex-notification-send -g  "Disable single-window square aspect ratio" ;;
+esac

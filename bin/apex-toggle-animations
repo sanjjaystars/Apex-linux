@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# apex:summary=Toggle animations, transparency and other effects that are slow without a GPU
+# apex:args=[toggle|on|off]
+# apex:examples=apex toggle animations | apex toggle animations off | apex toggle animations on
+
+# The flag records animations being off, so on and off swap on the way through.
+case ${1:-toggle} in
+toggle) apex-hyprland-toggle no-animations toggle ;;
+on) apex-hyprland-toggle no-animations off ;;
+off) apex-hyprland-toggle no-animations on ;;
+*)
+  echo "Usage: apex-toggle-animations [toggle|on|off]" >&2
+  exit 1
+  ;;
+esac
+
+if apex-hyprland-toggle-enabled no-animations; then
+  apex-notification-send -g 󰕟 "Animations disabled"
+else
+  apex-notification-send -g 󰕟 "Animations enabled"
+fi

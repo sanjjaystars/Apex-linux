@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# apex:summary=Open Voxtype AI model setup
+
+set -e
+
+apex-launch-floating-terminal-with-presentation "voxtype setup model"
+apex-restart-shell

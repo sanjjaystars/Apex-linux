@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "apex.lock",
+  "name": "Lock Screen",
+  "version": "1.0.0",
+  "author": "Apex",
+  "description": "Quickshell session lock with separate password and fingerprint PAM flows.",
+  "apex": {
+    "capabilities": [
+      "authentication"
+    ]
+  },
+  "kinds": [
+    "service"
+  ],
+  "keepLoaded": true,
+  "entryPoints": {
+    "service": "Service.qml"
+  }
+}

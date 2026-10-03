@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "apex.dev-gallery",
+  "name": "Dev gallery",
+  "version": "1.0.0",
+  "author": "Apex",
+  "description": "Visual reference for apex-shell common UI components. Summon with: apex-shell shell summon apex.dev-gallery '{}' (or run: apex dev ui-preview).",
+  "kinds": [
+    "panel"
+  ],
+  "entryPoints": {
+    "panel": "GalleryPanel.qml"
+  }
+}

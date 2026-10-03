@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# apex:summary=Refresh the current theme from its templates.
+
+THEME_NAME_PATH="$HOME/.local/state/apex/current/theme.name"
+
+if [[ -f $THEME_NAME_PATH ]]; then
+  APEX_THEME_SKIP_BACKGROUND=1 apex-theme-set "$(cat $THEME_NAME_PATH)"
+fi

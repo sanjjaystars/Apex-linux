@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# apex:summary=Toggle notification do-not-disturb mode
+
+state=$(apex-shell notifications toggleDnd 2>/dev/null || echo "")
+apex-shell -q apex.indicators refresh

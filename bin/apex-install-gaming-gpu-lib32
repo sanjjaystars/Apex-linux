@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# apex:summary=Install lib32 graphics drivers (Vulkan + NVIDIA) for any detected GPUs.
+# apex:group=install
+# apex:name=gaming gpu-lib32
+# apex:requires-sudo=true
+
+set -e
+
+echo "Installing lib32 graphics drivers..."
+
+PACKAGES=()
+
+declare -A VULKAN_DRIVERS=(
+  [Intel]=lib32-vulkan-intel
+  [AMD]=lib32-vulkan-radeon
+)
+for vendor in "${!VULKAN_DRIVERS[@]}"; do
+  if lspci | grep -iE "(VGA|Display).*$vendor" >/dev/null; then
+    PACKAGES+=("${VULKAN_DRIVERS[$vendor]}")
+  fi
+done
+
+if apex-hw-nvidia-gsp; then
+  PACKAGES+=(lib32-nvidia-utils)
+elif apex-hw-nvidia-without-gsp; then
+  PACKAGES+=(lib32-nvidia-580xx-utils)
+fi
+
+(( ${#PACKAGES[@]} > 0 )) && apex-pkg-add "${PACKAGES[@]}"

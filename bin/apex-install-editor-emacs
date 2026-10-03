@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# apex:summary=Install Emacs with Apex theme and font integration via the apex-emacs AUR package
+
+echo "Installing Emacs..."
+apex-pkg-aur-add apex-emacs && apex-install-emacs
+
+# emacsclient opens a frame on the running daemon, not a second Emacs
+setsid uwsm-app -- gtk-launch emacsclient >/dev/null 2>&1 &

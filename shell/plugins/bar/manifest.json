@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "apex.bar",
+  "name": "Bar",
+  "version": "1.0.0",
+  "author": "Apex",
+  "description": "Status bar with widgets",
+  "kinds": [
+    "bar"
+  ],
+  "entryPoints": {
+    "bar": "Bar.qml"
+  }
+}

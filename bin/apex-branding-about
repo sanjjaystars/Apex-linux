@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# apex:summary=Edit, set, or reset About branding
+# apex:group=branding
+# apex:name=about
+# apex:args=<image|text|reset>
+# apex:examples=apex branding about image | apex branding about text | apex branding about reset
+
+set -euo pipefail
+
+case "${1:-}" in
+image)
+  image=$(apex-file-select --title "Pick PNG or SVG for About" --extensions "png svg")
+  if apex-transcode-ascii "$image" ~/.config/apex/branding/about.txt --width 54 --height 26; then
+    apex-launch-about >/dev/null 2>&1
+  fi
+  ;;
+text)
+  apex-launch-editor ~/.config/apex/branding/about.txt >/dev/null 2>&1 && apex-launch-about >/dev/null 2>&1
+  ;;
+reset)
+  cp "$APEX_PATH/icon.txt" ~/.config/apex/branding/about.txt && apex-launch-about >/dev/null 2>&1
+  ;;
+*)
+  echo "Usage: apex-branding-about <image|text|reset>" >&2
+  exit 1
+  ;;
+esac

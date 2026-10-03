@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Name=Discord
+Exec=apex-launch-webapp https://discord.com/channels/@me
+Terminal=false
+Type=Application
+Icon=apex-discord
+StartupNotify=true

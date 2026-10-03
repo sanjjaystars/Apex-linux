@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# apex:summary=Refresh the shell update status
+# apex:hidden=true
+
+set -e
+
+if apex-update-available >/dev/null; then
+  apex-shell -q apex.system-update refresh
+else
+  apex-shell -q apex.system-update clear
+fi
