@@ -65,3 +65,6 @@ Result: docs/THEMES.md created and verified.
 
 2026-10-03 14:32:50 | T4.2 | Verified and hardened bin/apex-theme-set and bin/apex-theme-list. Updated bin/apex-theme-list with portable pure-Bash scanning and POSIX-compliant awk title casing. Verified reload pipeline across all 17 application hooks. Shellcheck passed with 0 errors. Ticked T4.2 in TASKS.md.
 Result: apex-theme-set and apex-theme-list verified and hardened.
+
+2026-10-03 14:45:20 | T4.3 | Created four bespoke flagship themes for Apex Linux: themes/apex-dark (signature deep slate / sky blue), themes/apex-light (frost / azure blue), themes/apex-crimson (charcoal obsidian / carmine rose), and themes/apex-emerald (dark forest / mint emerald), each with complete 26-variable colors.toml palettes conforming to docs/THEMES.md. Ticked T4.3 in TASKS.md.
+Result: 4 bespoke themes created and verified.
