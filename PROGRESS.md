@@ -44,3 +44,6 @@ Result: README.md, LICENSE, and THIRD_PARTY_NOTICES.md complete and verified.
 
 2026-10-03 14:19:10 | T3.1 | Created minimal, safe, and readable boot.sh. Avoids piped sudo surprises, verifies TTY interactive execution, checks Bash 5+, checks Arch Linux, checks EUID, verifies tools (git, curl), displays ANSI logo, supports --dry-run and --help. Shellcheck and check-name-leaks.sh pass with 0 errors. Ticked T3.1 in TASKS.md.
 Result: boot.sh created and verified.
+
+2026-10-03 14:23:30 | T3.2 | Audited all install/ stages for idempotency and established logging convention. Implemented log_step function in install/helpers/logging.sh with timestamps, console output, and log-file output. Updated install/{config,hardware,user,login,post-install}/all.sh orchestrators with explicit step names. Shellcheck passed with 0 errors. Ticked T3.2 in TASKS.md.
+Result: install/ stages hardened for idempotency and logging convention implemented.
