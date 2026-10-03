@@ -31,6 +31,9 @@ USER_PASSWORD=""
 HOSTNAME="apex-linux"
 TIMEZONE="UTC"
 MOUNT_DIR="/mnt"
+FAST_MODE="no"
+ASSUME_YES="no"
+DEFER_PROVISIONING="no"
 
 # Colors
 C_RESET="\033[0m"
@@ -57,6 +60,26 @@ die() {
   exit 1
 }
 
+usage() {
+  cat <<'USAGE'
+Usage: apex-guided-installer [OPTIONS] [TARGET_DISK]
+
+Apex Linux Guided & Fast Installer
+Installs Apex Linux with Btrfs subvolumes, Limine bootloader, and optional LUKS2.
+
+Options:
+  -f, --fast            Fast install mode (<60s install on NVMe, defers user setup to first boot)
+  -d, --disk DEV        Specify target block device (e.g. /dev/nvme0n1)
+  -y, --yes             Assume yes; skip destructive confirmation prompt
+  --defer-provisioning  Skip user creation; arm apex-provision-owner for first boot
+  -u, --user NAME       Create primary user account directly
+  -p, --password PASS   Set password for primary user and root
+  -h, --hostname HOST   Set system hostname (default: apex-linux)
+  -e, --encrypt         Enable LUKS2 full-disk encryption
+  --help                Show this help message
+USAGE
+}
+
 # Preflight checks
 check_environment() {
   notice "Checking hardware environment..."
@@ -79,14 +102,31 @@ check_environment() {
 
 # Select target installation disk
 select_disk() {
+  if [[ -n $TARGET_DISK && -b $TARGET_DISK ]]; then
+    success "Using target disk: $TARGET_DISK"
+    return 0
+  fi
+
+  if [[ -n ${APEX_TARGET_DISK:-} && -b ${APEX_TARGET_DISK} ]]; then
+    TARGET_DISK="$APEX_TARGET_DISK"
+    success "Using target disk from environment: $TARGET_DISK"
+    return 0
+  fi
+
   notice "Scanning available storage drives..."
   echo ""
 
   # List non-loop, non-ram disks
-  mapfile -t AVAILABLE_DISKS < <(lsblk -dpno NAME,SIZE,MODEL,TYPE | grep -E 'disk' | awk '{print $1 " (" $2 ", " $3 ")"}')
+  mapfile -t AVAILABLE_DISKS < <(lsblk -dpno NAME,SIZE,MODEL,TYPE 2>/dev/null | grep -E 'disk' | awk '{print $1 " (" $2 ", " $3 ")"}')
 
   if (( ${#AVAILABLE_DISKS[@]} == 0 )); then
     die "No suitable installation disks found on this system."
+  fi
+
+  if [[ $FAST_MODE == "yes" && ${#AVAILABLE_DISKS[@]} == 1 ]]; then
+    TARGET_DISK=$(echo "${AVAILABLE_DISKS[0]}" | awk '{print $1}')
+    success "Fast Mode: Automatically selected single disk: $TARGET_DISK"
+    return 0
   fi
 
   echo "Available disks:"
@@ -97,18 +137,13 @@ select_disk() {
   done
   echo ""
 
-  if [[ -n "${APEX_TARGET_DISK:-}" ]]; then
-    TARGET_DISK="$APEX_TARGET_DISK"
-    info "Using target disk from environment: $TARGET_DISK"
-  else
-    read -rp "Select disk number [1-${#AVAILABLE_DISKS[@]}]: " choice
-    if [[ ! $choice =~ ^[0-9]+$ ]] || (( choice < 1 || choice > ${#AVAILABLE_DISKS[@]} )); then
-      die "Invalid disk selection."
-    fi
-    TARGET_DISK=$(echo "${AVAILABLE_DISKS[$((choice - 1))]}" | awk '{print $1}')
+  read -rp "Select disk number [1-${#AVAILABLE_DISKS[@]}]: " choice
+  if [[ ! $choice =~ ^[0-9]+$ ]] || (( choice < 1 || choice > ${#AVAILABLE_DISKS[@]} )); then
+    die "Invalid disk selection."
   fi
+  TARGET_DISK=$(echo "${AVAILABLE_DISKS[$((choice - 1))]}" | awk '{print $1}')
 
-  if [[ ! -b "$TARGET_DISK" ]]; then
+  if [[ ! -b $TARGET_DISK ]]; then
     die "Selected disk $TARGET_DISK is not a valid block device."
   fi
 
@@ -117,6 +152,23 @@ select_disk() {
 
 # Configure installation options
 configure_options() {
+  if [[ $FAST_MODE == "yes" || $DEFER_PROVISIONING == "yes" ]]; then
+    notice "Fast Setup: Personal user configuration is deferred to first boot."
+    DEFER_PROVISIONING="yes"
+    HOSTNAME="${HOSTNAME:-apex-linux}"
+    if [[ -z $TIMEZONE || $TIMEZONE == "UTC" ]]; then
+      if [[ -f /etc/timezone ]]; then
+        TIMEZONE=$(cat /etc/timezone)
+      elif command -v timedatectl >/dev/null 2>&1; then
+        TIMEZONE=$(timedatectl show --property=Timezone --value 2>/dev/null || echo "UTC")
+      fi
+    fi
+    info "Default Hostname: $HOSTNAME"
+    info "Default Timezone: $TIMEZONE"
+    info "Deferred user setup: Enabled (first boot will run apex-provision-owner)"
+    return 0
+  fi
+
   echo ""
   notice "System Configuration"
 
@@ -175,21 +227,32 @@ configure_options() {
 confirm_installation() {
   echo ""
   echo "========================================================"
-  printf "${C_BOLD}             INSTALLATION SUMMARY                       ${C_RESET}\n"
+  printf '%s             INSTALLATION SUMMARY                       %s\n' "$C_BOLD" "$C_RESET"
   echo "========================================================"
   echo "  Target Disk:      $TARGET_DISK"
   echo "  Partition Layout: ESP (1024MB FAT32) + Root (Btrfs)"
   echo "  Btrfs Subvolumes: @, @home, @snapshots, @var_log, @var_cache"
   echo "  Encryption:       $ENABLE_LUKS"
   echo "  Hostname:         $HOSTNAME"
-  echo "  Primary User:     $USERNAME"
+  if [[ $DEFER_PROVISIONING == "yes" ]]; then
+    echo "  Primary User:     [Deferred to First Boot via apex-provision-owner]"
+  else
+    echo "  Primary User:     $USERNAME"
+  fi
   echo "  Timezone:         $TIMEZONE"
+  echo "  Mode:             $([[ $FAST_MODE == "yes" ]] && echo "Fast / Under 60s (<60s)" || echo "Interactive")"
   echo "========================================================"
   printf "${C_RED}${C_BOLD}WARNING: ALL EXISTING DATA ON %s WILL BE DESTROYED!${C_RESET}\n" "$TARGET_DISK"
   echo ""
 
-  if [[ "${TEST_TARGET:-}" == "1" ]]; then
-    info "Automated test mode active (TEST_TARGET=1). Skipping confirmation."
+  if [[ ${TEST_TARGET:-} == "1" || $ASSUME_YES == "yes" ]]; then
+    info "Non-interactive confirmation active. Proceeding immediately."
+    return 0
+  fi
+
+  if [[ $FAST_MODE == "yes" ]]; then
+    notice "Fast Mode: Starting installation in 5 seconds. Press Ctrl+C to abort, or Enter to proceed."
+    read -t 5 -r _ || true
     return 0
   fi
 
@@ -258,14 +321,19 @@ partition_and_format() {
   btrfs subvolume create "$MOUNT_DIR/@var_cache"
   umount "$MOUNT_DIR"
 
-  notice "Mounting Btrfs layout to $MOUNT_DIR..."
-  mount -o noatime,compress=zstd:3,subvol=@ "$TARGET_BTRFS_DEV" "$MOUNT_DIR"
+  local compress_opt="compress=zstd:3"
+  if [[ $FAST_MODE == "yes" ]]; then
+    compress_opt="compress=zstd:1"
+  fi
+
+  notice "Mounting Btrfs layout to $MOUNT_DIR ($compress_opt)..."
+  mount -o noatime,"$compress_opt",subvol=@ "$TARGET_BTRFS_DEV" "$MOUNT_DIR"
 
   mkdir -p "$MOUNT_DIR"/{home,.snapshots,var/log,var/cache,efi}
-  mount -o noatime,compress=zstd:3,subvol=@home "$TARGET_BTRFS_DEV" "$MOUNT_DIR/home"
-  mount -o noatime,compress=zstd:3,subvol=@snapshots "$TARGET_BTRFS_DEV" "$MOUNT_DIR/.snapshots"
-  mount -o noatime,compress=zstd:3,subvol=@var_log "$TARGET_BTRFS_DEV" "$MOUNT_DIR/var/log"
-  mount -o noatime,compress=zstd:3,subvol=@var_cache "$TARGET_BTRFS_DEV" "$MOUNT_DIR/var/cache"
+  mount -o noatime,"$compress_opt",subvol=@home "$TARGET_BTRFS_DEV" "$MOUNT_DIR/home"
+  mount -o noatime,"$compress_opt",subvol=@snapshots "$TARGET_BTRFS_DEV" "$MOUNT_DIR/.snapshots"
+  mount -o noatime,"$compress_opt",subvol=@var_log "$TARGET_BTRFS_DEV" "$MOUNT_DIR/var/log"
+  mount -o noatime,"$compress_opt",subvol=@var_cache "$TARGET_BTRFS_DEV" "$MOUNT_DIR/var/cache"
 
   notice "Mounting EFI partition to $MOUNT_DIR/efi..."
   mount "$EFI_PART" "$MOUNT_DIR/efi"
@@ -296,7 +364,13 @@ install_base_system() {
     which
   )
 
-  pacstrap -K "$MOUNT_DIR" "${base_packages[@]}"
+  local pacstrap_flags=(-K)
+  if [[ -d /var/cache/pacman/pkg ]] && find /var/cache/pacman/pkg -name "*.pkg.tar.*" 2>/dev/null | grep -q .; then
+    info "Using local pacman cache for fast offline installation..."
+    pacstrap_flags+=(-c)
+  fi
+
+  pacstrap "${pacstrap_flags[@]}" "$MOUNT_DIR" "${base_packages[@]}"
   success "Base packages installed."
 
   notice "Generating filesystem mount table (fstab)..."
@@ -329,16 +403,23 @@ EOF
   # Enable NetworkManager
   arch-chroot "$MOUNT_DIR" systemctl enable NetworkManager.service
 
-  # Configure Primary User & Sudo
-  notice "Creating user account $USERNAME..."
-  arch-chroot "$MOUNT_DIR" useradd -m -G wheel,storage,power,audio,video -s /bin/bash "$USERNAME"
-  echo "$USERNAME:$USER_PASSWORD" | arch-chroot "$MOUNT_DIR" chpasswd
-  echo "root:$USER_PASSWORD" | arch-chroot "$MOUNT_DIR" chpasswd
-
   # Sudo configuration for wheel group
   mkdir -p "$MOUNT_DIR/etc/sudoers.d"
   echo "%wheel ALL=(ALL:ALL) ALL" > "$MOUNT_DIR/etc/sudoers.d/wheel"
   chmod 440 "$MOUNT_DIR/etc/sudoers.d/wheel"
+
+  # Configure Primary User or Defer Provisioning
+  if [[ $DEFER_PROVISIONING == "yes" ]]; then
+    notice "Deferred provisioning enabled: Arming apex-provision-owner for first boot..."
+    mkdir -p "$MOUNT_DIR/var/lib/apex/provisioning"
+    touch "$MOUNT_DIR/var/lib/apex/provisioning/pending"
+    echo "root:apex" | arch-chroot "$MOUNT_DIR" chpasswd
+  else
+    notice "Creating user account $USERNAME..."
+    arch-chroot "$MOUNT_DIR" useradd -m -G wheel,storage,power,audio,video -s /bin/bash "$USERNAME"
+    echo "$USERNAME:$USER_PASSWORD" | arch-chroot "$MOUNT_DIR" chpasswd
+    echo "root:$USER_PASSWORD" | arch-chroot "$MOUNT_DIR" chpasswd
+  fi
 
   # Configure mkinitcpio for Btrfs and LUKS
   notice "Configuring mkinitcpio..."
@@ -378,6 +459,24 @@ EOF
   chmod -R u=rwX,go=rX "$MOUNT_DIR/opt/apex-linux"
   ln -sf /opt/apex-linux/bin/apex "$MOUNT_DIR/usr/local/bin/apex"
 
+  # Enable apex-provision-owner service if deferred
+  if [[ $DEFER_PROVISIONING == "yes" ]]; then
+    if [[ -f "$MOUNT_DIR/opt/apex-linux/install/provisioning/apex-provision-owner.service" ]]; then
+      cp "$MOUNT_DIR/opt/apex-linux/install/provisioning/apex-provision-owner.service" "$MOUNT_DIR/etc/systemd/system/apex-provision-owner.service"
+      mkdir -p "$MOUNT_DIR/etc/systemd/system/multi-user.target.wants"
+      ln -sf /etc/systemd/system/apex-provision-owner.service "$MOUNT_DIR/etc/systemd/system/multi-user.target.wants/apex-provision-owner.service"
+      success "apex-provision-owner.service armed for first boot."
+    fi
+  fi
+
+  # Apply Apex system setup
+  notice "Applying Apex system configuration..."
+  if [[ $DEFER_PROVISIONING == "yes" ]]; then
+    arch-chroot "$MOUNT_DIR" /opt/apex-linux/bin/apex-apply-system --defer-provisioning --first-install || true
+  else
+    arch-chroot "$MOUNT_DIR" /opt/apex-linux/bin/apex-apply-system --install-user "$USERNAME" --first-install || true
+  fi
+
   # Bootloader setup (Limine)
   notice "Installing and configuring Limine UEFI bootloader..."
   mkdir -p "$MOUNT_DIR/efi/EFI/BOOT"
@@ -389,13 +488,13 @@ EOF
     cp "$MOUNT_DIR/usr/share/limine/BOOTX64.EFI" "$MOUNT_DIR/efi/EFI/BOOT/BOOTX64.EFI"
   fi
 
-  local root_uuid
   local root_param
   if [[ $ENABLE_LUKS == "yes" ]]; then
     local luks_uuid
     luks_uuid=$(blkid -s UUID -o value "$ROOT_PART")
     root_param="cryptdevice=UUID=${luks_uuid}:cryptroot root=/dev/mapper/cryptroot rootflags=subvol=@"
   else
+    local root_uuid
     root_uuid=$(blkid -s UUID -o value "$ROOT_PART")
     root_param="root=UUID=${root_uuid} rootflags=subvol=@"
   fi
@@ -432,6 +531,58 @@ cleanup() {
 }
 
 main() {
+  while (($#)); do
+    case "$1" in
+      -f|--fast)
+        FAST_MODE="yes"
+        DEFER_PROVISIONING="yes"
+        shift
+        ;;
+      -d|--disk)
+        TARGET_DISK="${2:-}"
+        shift 2
+        ;;
+      -y|--yes)
+        ASSUME_YES="yes"
+        shift
+        ;;
+      --defer-provisioning)
+        DEFER_PROVISIONING="yes"
+        shift
+        ;;
+      -u|--user)
+        USERNAME="${2:-}"
+        shift 2
+        ;;
+      -p|--password)
+        USER_PASSWORD="${2:-}"
+        shift 2
+        ;;
+      -h|--hostname)
+        HOSTNAME="${2:-}"
+        shift 2
+        ;;
+      -e|--encrypt)
+        ENABLE_LUKS="yes"
+        shift
+        ;;
+      --help)
+        usage
+        exit 0
+        ;;
+      *)
+        if [[ -b $1 && -z $TARGET_DISK ]]; then
+          TARGET_DISK="$1"
+          shift
+        else
+          echo "Unknown option: $1" >&2
+          usage >&2
+          exit 1
+        fi
+        ;;
+    esac
+  done
+
   check_environment
   select_disk
   configure_options
@@ -443,7 +594,7 @@ main() {
 
   echo ""
   echo "========================================================"
-  printf "${C_GREEN}${C_BOLD}   APEX LINUX INSTALLATION COMPLETED SUCCESSFULLY!      ${C_RESET}\n"
+  printf '%s%s   APEX LINUX INSTALLATION COMPLETED SUCCESSFULLY!      %s\n' "$C_GREEN" "$C_BOLD" "$C_RESET"
   echo "========================================================"
   echo "You can now reboot your computer into your new Apex Linux system."
   echo "Remove the live installation media before rebooting."

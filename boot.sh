@@ -33,6 +33,7 @@ A safe, minimal entrypoint to bootstrap or launch the Apex Linux installer.
 
 Options:
   --install       Launch the Apex Guided Installer to install onto storage drive
+  --fast          Fast install mode: defers user setup to first boot (<60s on NVMe)
   --dry-run       Check prerequisites and environment without making any changes
   --target DIR    Specify target directory for Apex checkout (default: ~/.local/share/apex)
   --branch NAME   Specify git branch to clone (default: main)
@@ -135,6 +136,7 @@ check_prerequisites() {
 main() {
   local dry_run=0
   local install_mode=0
+  local fast_mode=0
   local target_dir="$APEX_DIR_DEFAULT"
   local branch="main"
 
@@ -142,6 +144,11 @@ main() {
     case "$1" in
       --install)
         install_mode=1
+        shift
+        ;;
+      --fast)
+        install_mode=1
+        fast_mode=1
         shift
         ;;
       --dry-run)
@@ -206,6 +213,10 @@ main() {
   if (( install_mode )) || [[ -d /run/archiso ]]; then
     local installer_bin="$target_dir/iso/airootfs/usr/local/bin/apex-guided-installer"
     if [[ -x "$installer_bin" ]]; then
+      if (( fast_mode )); then
+        log_info "Fast mode: launching apex-guided-installer --fast"
+        exec "$installer_bin" --fast
+      fi
       echo ""
       echo -n "Would you like to launch the Apex Guided Installer now to install to disk? (Y/n): "
       read -r launch_choice </dev/tty || launch_choice="y"
