@@ -1,1 +1,60 @@
+name: Build and Release Apex Linux ISO
 
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-iso:
+    name: Build Archiso Image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Apex Linux repository
+        uses: actions/checkout@v4
+
+      - name: Build ISO in privileged Arch Linux container
+        run: |
+          docker run --privileged --rm \
+            -v "${{ github.workspace }}":/workspace \
+            -w /workspace \
+            archlinux:base-devel \
+            bash -c "
+              set -eo pipefail &&
+              echo '==> Updating package database and installing archiso tooling...' &&
+              pacman -Syu --noconfirm archiso git rsync coreutils sed gawk &&
+              echo '==> Running Apex Linux ISO build...' &&
+              ./iso/build-iso.sh --clean --out-dir /workspace/iso/out
+            "
+
+      - name: Verify ISO output and checksums
+        run: |
+          ls -lh iso/out/
+          cat iso/out/*.sha256
+
+      - name: Upload ISO Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: apex-linux-iso
+          path: |
+            iso/out/*.iso
+            iso/out/*.sha256
+          retention-days: 14
+
+      - name: Publish to GitHub Releases (on tag)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            iso/out/*.iso
+            iso/out/*.sha256
+          name: Apex Linux ${{ github.ref_name }}
+          body_path: CHANGELOG.md
+          draft: false
+          prerelease: false
