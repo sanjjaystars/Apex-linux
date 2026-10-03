@@ -80,3 +80,6 @@ Result: Theme validation suite and manual checklist implemented and passing.
 
 2026-10-03 14:51:30 | T5.1 | Ported and verified all 480 bin/apex-* commands. Confirmed all 473 shell scripts pass shellcheck with zero errors, all 7 python scripts compile cleanly with zero errors, metadata summary tags exist on all commands, and check-name-leaks.sh confirmed zero old name leaks across all commands. Ticked T5.1 in TASKS.md.
 Result: All 480 bin/apex-* commands verified and passing.
+
+2026-10-03 14:53:50 | T5.2 | Validated bin/apex-migrate runner (--pending check, pacman db.lck waiting, sorted execution, state tracking). Created sample migration migrations/1791000000.sh to initialize desktop state and default theme. Tested execution and verified idempotency. Ticked T5.2 in TASKS.md.
+Result: Migrations runner verified and sample migration created.
