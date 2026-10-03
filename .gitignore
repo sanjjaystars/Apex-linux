@@ -3,3 +3,5 @@
 *.tmp
 .DS_Store
 __pycache__/
+iso/airootfs/opt/
+iso/out/

@@ -101,3 +101,6 @@ Result: Apex repo embedding and live environment services created and verified.
 2026-10-03 15:05:00 | T6.4 | Implemented interactive guided installer iso/airootfs/usr/local/bin/apex-guided-installer and launcher iso/airootfs/root/install.sh. Orchestrates UEFI checks, disk discovery, optional LUKS2 Argon2id encryption, GPT partitioning (ESP + Btrfs), Btrfs subvolumes layout (@, @home, @snapshots, @var_log, @var_cache), pacstrap base system install, locale/keyboard/hostname config, user account setup, Limine bootloader installation, and Apex repository deployment. Destructive actions strictly protected by TEST_TARGET=1 or explicit YES uppercase confirmation. Shellcheck passed with 0 errors. Ticked T6.4 in TASKS.md.
 Result: Guided installer implemented and verified.
 
+2026-10-03 15:07:00 | T6.5 | Implemented iso/build-iso.sh mkarchiso build orchestration wrapper with options for work/out directory specification, clean build, verbose logging, and non-Arch --dry-run validation. Verified profile parsing, package counting, and embedding. Host detected Darwin arm64; dry run passed 100%. Shellcheck passed with 0 errors. Ticked T6.5 in TASKS.md.
+Result: iso/build-iso.sh created and verified via dry run.
+
