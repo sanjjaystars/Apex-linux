@@ -98,7 +98,6 @@ shadow
 sudo
 tar
 tmux
-tzupdate
 util-linux
 which
 zsh
