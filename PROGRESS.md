@@ -95,3 +95,6 @@ Result: iso/ skeleton and package list created and verified.
 2026-10-03 15:03:00 | T6.2 | Configured branded bootloader menus and live environment identity. Generated GRUB EFI config (iso/grub/grub.cfg), Syslinux BIOS config (iso/syslinux/syslinux.cfg), and systemd-boot configs (iso/efiboot/loader/) with APEX_LINUX volume label and cyan/slate styling. Branded live console MOTD (iso/airootfs/etc/motd) with ANSI logo, issue banner, hostname (apex-live), and hosts. check-name-leaks.sh passed with 0 leaks. Ticked T6.2 in TASKS.md.
 Result: Branded boot menus, volume label, splash and MOTD created and verified.
 
+2026-10-03 15:04:00 | T6.3 | Embedded Apex repository and live environment services. Configured passwordless sudo for live session (iso/airootfs/etc/sudoers.d/00-live), systemd autologin on tty1 (iso/airootfs/etc/systemd/system/getty@tty1.service.d/autologin.conf), interactive bashrc/profile setting APEX_PATH=/opt/apex-linux, and created iso/embed-repo.sh sync script. check-name-leaks.sh passed with 0 leaks. Ticked T6.3 in TASKS.md.
+Result: Apex repo embedding and live environment services created and verified.
+
