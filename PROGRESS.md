@@ -89,3 +89,6 @@ Result: apex-update pipeline verified and validated.
 2026-10-03 15:00:00 | T5.4 | Authored comprehensive keybindings reference docs/KEYS.md and created bin/apex-keys terminal cheat sheet command with category parsing, text filtering, --menu option (delegating to apex-menu-keybindings), and --raw markdown export. Added keys group description to bin/apex. Shellcheck passed with 0 errors. Ticked T5.4 in TASKS.md.
 Result: docs/KEYS.md and bin/apex-keys created and verified.
 
+2026-10-03 15:02:00 | T6.1 | Initialized iso/ structure from Archiso releng profile specification. Created iso/profiledef.sh (x86_64, zstd compression, APEX_LINUX volume label), iso/packages.x86_64 (full base, systemd, btrfs, cryptsetup, snapper, network, TUI, and installer dependencies), iso/pacman.conf, and iso/airootfs/etc/mkinitcpio.conf. check-name-leaks.sh passed with 0 leaks. Ticked T6.1 in TASKS.md.
+Result: iso/ skeleton and package list created and verified.
+
