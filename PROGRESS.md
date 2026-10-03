@@ -50,3 +50,6 @@ Result: install/ stages hardened for idempotency and logging convention implemen
 
 2026-10-03 14:25:30 | T3.3 | Separated base and optional/hardware package lists into dedicated official Arch and AUR/custom sets: created install/apex-base-official.packages (131 pkgs), install/apex-base-aur.packages (28 pkgs), install/apex-other-official.packages (34 pkgs), and install/apex-other-aur.packages (23 pkgs). Reorganized install/apex-base.packages (159 total) and install/apex-other.packages (57 total) with clean section headers. Ticked T3.3 in TASKS.md.
 Result: Package lists categorized into official vs AUR and verified.
+
+2026-10-03 14:27:00 | T3.4 | Implemented installer pre-flight check library in install/helpers/preflight.sh and CLI command bin/apex-install-preflight (verifying Arch Linux, non-root user, active internet connection, minimum free disk space, and UEFI firmware). Shellcheck and check-name-leaks.sh passed with 0 errors. Ticked T3.4 in TASKS.md.
+Result: Pre-flight checks implemented and verified.

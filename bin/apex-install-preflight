@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# apex:summary=Run installer pre-flight checks (Arch, non-root, internet, disk, UEFI)
+# apex:group=install
+# apex:examples=apex install preflight
+
+set -euo pipefail
+
+APEX_PATH="${APEX_PATH:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
+export APEX_PATH
+
+# shellcheck source=install/helpers/preflight.sh
+source "$APEX_PATH/install/helpers/preflight.sh"
+
+run_all_preflight_checks "$@"
