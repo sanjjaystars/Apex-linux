@@ -62,4 +62,4 @@
 - [x] T7.1 docs/INSTALL.md, docs/TROUBLESHOOTING.md, docs/CONTRIBUTING.md.
 - [x] T7.2 tests/run-all.sh (shellcheck, name-leak check, package verification).
 - [x] T7.3 Release checklist: version tag, ISO checksums (sha256), changelog.
-- [ ] T7.4 Final audit: re-run tests/check-name-leaks.sh and all tests; list everything still UNTESTED or TODO(verify).
+- [x] T7.4 Final audit: re-run tests/check-name-leaks.sh and all tests; list everything still UNTESTED or TODO(verify).
