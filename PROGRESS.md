@@ -77,3 +77,6 @@ Result: Theme previews and gallery table in docs/THEMES.md added and verified.
 
 2026-10-03 14:49:20 | T4.6 | Created tests/check-themes.sh automated test suite and manual verification checklist. Validated all 26 themes across colors.toml schema, wallpaper availability, and preview generation (100% pass rate: 26/26). Documented live Wayland testing checklist. Shellcheck passed with 0 errors. Ticked T4.6 in TASKS.md.
 Result: Theme validation suite and manual checklist implemented and passing.
+
+2026-10-03 14:51:30 | T5.1 | Ported and verified all 480 bin/apex-* commands. Confirmed all 473 shell scripts pass shellcheck with zero errors, all 7 python scripts compile cleanly with zero errors, metadata summary tags exist on all commands, and check-name-leaks.sh confirmed zero old name leaks across all commands. Ticked T5.1 in TASKS.md.
+Result: All 480 bin/apex-* commands verified and passing.
