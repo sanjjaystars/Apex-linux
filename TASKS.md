@@ -47,7 +47,7 @@
 ## STAGE 5: Commands, menu, migrations, updates
 - [x] T5.1 Port and verify each bin/apex-* command. For each: --help works, shellcheck passes, no references to the old name.
 - [x] T5.2 Implement the migrations runner and one sample migration.
-- [ ] T5.3 Implement apex-update: snapshot -> pacman update -> migrations -> report.
+- [x] T5.3 Implement apex-update: snapshot -> pacman update -> migrations -> report.
 - [ ] T5.4 Write docs/KEYS.md and the keybinding cheat sheet command.
 
 ## STAGE 6: ISO
