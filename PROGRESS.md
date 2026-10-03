@@ -86,3 +86,6 @@ Result: Migrations runner verified and sample migration created.
 
 2026-10-03 14:55:00 | T5.3 | Validated apex-update pipeline orchestration: pre-flight free space check -> single privileged authorization -> Snapper Btrfs snapshot creation -> system package update -> migrations execution -> orphan cleanup -> log analysis -> service restart & AUR packages update with revoked privilege. Shellcheck passed with 0 errors. Ticked T5.3 in TASKS.md.
 Result: apex-update pipeline verified and validated.
+2026-10-03 15:00:00 | T5.4 | Authored comprehensive keybindings reference docs/KEYS.md and created bin/apex-keys terminal cheat sheet command with category parsing, text filtering, --menu option (delegating to apex-menu-keybindings), and --raw markdown export. Added keys group description to bin/apex. Shellcheck passed with 0 errors. Ticked T5.4 in TASKS.md.
+Result: docs/KEYS.md and bin/apex-keys created and verified.
+
