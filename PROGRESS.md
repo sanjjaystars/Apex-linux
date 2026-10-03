@@ -74,3 +74,6 @@ Result: scripts/gen-wallpapers.sh created and wallpapers generated for all theme
 
 2026-10-03 14:46:30 | T4.5 | Added theme switcher preview cards (preview.png) for all 26 themes and updated docs/THEMES.md with a comprehensive gallery table specifying names, modes, accent hex values, background hex values, and aesthetic profiles. Ticked T4.5 in TASKS.md.
 Result: Theme previews and gallery table in docs/THEMES.md added and verified.
+
+2026-10-03 14:49:20 | T4.6 | Created tests/check-themes.sh automated test suite and manual verification checklist. Validated all 26 themes across colors.toml schema, wallpaper availability, and preview generation (100% pass rate: 26/26). Documented live Wayland testing checklist. Shellcheck passed with 0 errors. Ticked T4.6 in TASKS.md.
+Result: Theme validation suite and manual checklist implemented and passing.

@@ -21,10 +21,12 @@ active_tab_background = "#a5a0b6"
 
 red = "#c38b7b"
 yellow = "#6B5E73"
+orange = "#c39b7b"
 green = "#87a9b0"
 cyan = "#a5a0b6"
 blue = "#b59790"
 magenta = "#c4d8e2"
+brown = "#855b4b"
 
 bright_red = "#c38b7b"
 bright_yellow = "#6B5E73"
