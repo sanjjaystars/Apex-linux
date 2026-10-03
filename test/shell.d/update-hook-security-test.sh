@@ -122,7 +122,7 @@ for script in bin/apex-update bin/apex-refresh-pacman default/apex/sudo-no-updat
 done
 
 reset_boundary
-printf '%s\n' 'printf startup-ran >>"$SUDO_TEST_ROOT/startup-marker"' >"$boundary_tmp/startup"
+builtin printf '%s\n' 'printf startup-ran >>"$SUDO_TEST_ROOT/startup-marker"' >"$boundary_tmp/startup"
 BASH_ENV="$boundary_tmp/startup" ENV="$boundary_tmp/startup" run_update -y || fail "sanitized update failed" "$(<"$boundary_tmp/output")"
 [[ ! -e $SUDO_TEST_ROOT/startup-marker ]] || fail "startup code leaked into an update helper"
 pass "inherited startup files do not run in the updater or its child scripts"

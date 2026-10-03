@@ -114,7 +114,9 @@ SH
 chmod +x "$test_dir/bin/"*
 
 run_command() {
-  env HOME="$test_home" APEX_PATH="$ROOT" PATH="$test_dir/bin:$ROOT/bin:$PATH" "$ROOT/bin/$@"
+  local cmd="$1"
+  shift
+  env HOME="$test_home" APEX_PATH="$ROOT" PATH="$test_dir/bin:$ROOT/bin:$PATH" "$ROOT/bin/$cmd" "$@"
 }
 
 cp "$ROOT/config/kitty/kitty.conf" "$kitty_config"

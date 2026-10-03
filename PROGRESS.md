@@ -32,3 +32,6 @@ Result: All paths consistently point to apex, 0 stray paths confirmed.
 
 2026-10-03 14:05:40 | T2.6 | Implemented tests/check-name-leaks.sh to scan codebase for any case form of old name. Verified shellcheck and bash -n pass with 0 errors. Executed test; passed with 0 name leaks across the entire codebase. Ticked T2.6 in TASKS.md.
 Result: tests/check-name-leaks.sh written, validated, and passing.
+
+2026-10-03 14:12:00 | T2.7 | Ran shellcheck across all 1,031 scripts in the repository. Fixed all 8 detected errors in bin/apex-bar-text-color (SC1087), bin/apex-menu-images (SC1087, SC2053), install/config/increase-lockout-limit.sh (SC1113), migrations/1780057136.sh (SC1087), test/shell.d/branding-about-animation-test.sh (SC1087), test/shell.d/kitty-config-test.sh (SC2145), test/shell.d/update-hook-security-test.sh (SC2218), and test/shell.d/fixtures/privileged-heredoc/plain-heredoc-indented-pseudo-delimiter.sh (SC1039). Re-scan verified 1,031 scripts with 0 errors. Ticked T2.7 in TASKS.md.
+Result: All 1,031 scripts pass shellcheck with zero errors.
