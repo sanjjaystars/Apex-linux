@@ -349,13 +349,34 @@ EOF
   fi
   arch-chroot "$MOUNT_DIR" mkinitcpio -P
 
-  # Copy Apex Linux repository into target system
-  if [[ -d /opt/apex-linux ]]; then
-    notice "Deploying Apex Linux distribution framework into target system..."
-    mkdir -p "$MOUNT_DIR/opt/apex-linux"
+  # Copy or clone Apex Linux repository into target system
+  notice "Deploying Apex Linux distribution framework into target system..."
+  mkdir -p "$MOUNT_DIR/opt/apex-linux"
+
+  local deployed="no"
+  if [[ -d /opt/apex-linux && -f /opt/apex-linux/bin/apex ]]; then
     rsync -a --exclude='.git' /opt/apex-linux/ "$MOUNT_DIR/opt/apex-linux/"
-    chmod -R u=rwX,go=rX "$MOUNT_DIR/opt/apex-linux"
+    deployed="yes"
   fi
+
+  if [[ $deployed == "no" ]]; then
+    local installer_dir
+    installer_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    local candidate_repo
+    candidate_repo="$(cd "$installer_dir/../../../.." 2>/dev/null && pwd || true)"
+    if [[ -n $candidate_repo && -f "$candidate_repo/bin/apex" ]]; then
+      rsync -a --exclude='.git' "$candidate_repo/" "$MOUNT_DIR/opt/apex-linux/"
+      deployed="yes"
+    fi
+  fi
+
+  if [[ $deployed == "no" ]]; then
+    info "Cloning directly from GitHub (https://github.com/sanjjaystars/Apex-linux.git)..."
+    git clone --depth 1 https://github.com/sanjjaystars/Apex-linux.git "$MOUNT_DIR/opt/apex-linux"
+  fi
+
+  chmod -R u=rwX,go=rX "$MOUNT_DIR/opt/apex-linux"
+  ln -sf /opt/apex-linux/bin/apex "$MOUNT_DIR/usr/local/bin/apex"
 
   # Bootloader setup (Limine)
   notice "Installing and configuring Limine UEFI bootloader..."

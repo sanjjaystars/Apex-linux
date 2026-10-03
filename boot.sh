@@ -32,6 +32,7 @@ Apex Linux Bootstrap Script
 A safe, minimal entrypoint to bootstrap or launch the Apex Linux installer.
 
 Options:
+  --install       Launch the Apex Guided Installer to install onto storage drive
   --dry-run       Check prerequisites and environment without making any changes
   --target DIR    Specify target directory for Apex checkout (default: ~/.local/share/apex)
   --branch NAME   Specify git branch to clone (default: main)
@@ -133,11 +134,16 @@ check_prerequisites() {
 
 main() {
   local dry_run=0
+  local install_mode=0
   local target_dir="$APEX_DIR_DEFAULT"
   local branch="main"
 
   while (($#)); do
     case "$1" in
+      --install)
+        install_mode=1
+        shift
+        ;;
       --dry-run)
         dry_run=1
         shift
@@ -195,6 +201,19 @@ main() {
 
   log_ok "Apex Linux bootstrap ready."
   log_info "To manage Apex, run: $target_dir/bin/apex"
+
+  # If running in live Archiso environment or --install was requested, offer to launch installer
+  if (( install_mode )) || [[ -d /run/archiso ]]; then
+    local installer_bin="$target_dir/iso/airootfs/usr/local/bin/apex-guided-installer"
+    if [[ -x "$installer_bin" ]]; then
+      echo ""
+      echo -n "Would you like to launch the Apex Guided Installer now to install to disk? (Y/n): "
+      read -r launch_choice </dev/tty || launch_choice="y"
+      if [[ $launch_choice != "n" && $launch_choice != "N" ]]; then
+        exec "$installer_bin"
+      fi
+    fi
+  fi
 }
 
 main "$@"
