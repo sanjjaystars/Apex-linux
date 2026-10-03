@@ -71,3 +71,6 @@ Result: 4 bespoke themes created and verified.
 
 2026-10-03 14:45:50 | T4.4 | Implemented scripts/gen-wallpapers.sh to procedurally generate minimal geometric and linear gradient wallpapers (1920x1080) and theme switcher previews based on colors.toml for all 26 themes in the repository. Verified zero reliance on upstream wallpapers. Shellcheck passed with 0 errors. Ticked T4.4 in TASKS.md.
 Result: scripts/gen-wallpapers.sh created and wallpapers generated for all themes.
+
+2026-10-03 14:46:30 | T4.5 | Added theme switcher preview cards (preview.png) for all 26 themes and updated docs/THEMES.md with a comprehensive gallery table specifying names, modes, accent hex values, background hex values, and aesthetic profiles. Ticked T4.5 in TASKS.md.
+Result: Theme previews and gallery table in docs/THEMES.md added and verified.

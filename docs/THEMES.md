@@ -148,3 +148,39 @@ Theme switching runs atomically without user session logout:
    - Kitty: `kitty @ set-colors` or signal `SIGUSR1`.
    - GTK / Flatpak: GSettings `gtk-theme` and `color-scheme` preferences updated.
 6. Writes active theme marker to `~/.local/state/apex/current/theme.name`.
+
+---
+
+## 6. Shipped Themes Gallery
+
+Apex ships with 26 curated themes, including 4 bespoke flagship palettes engineered specifically for Apex:
+
+| Theme Name | Mode | Accent Hex | Background Hex | Description |
+|---|---|---|---|---|
+| **Apex Dark** | Dark | `#38bdf8` | `#0f172a` | Flagship dark palette with deep void slate background and electric sky cyan accent. |
+| **Apex Light** | Light | `#2563eb` | `#f8fafc` | Clean frost daylight palette with high-contrast azure blue accents. |
+| **Apex Crimson** | Dark | `#f43f5e` | `#140e11` | Stealth charcoal obsidian background with intense carmine rose accents. |
+| **Apex Emerald** | Dark | `#10b981` | `#091310` | Calming dark forest night background paired with vibrant mint emerald highlights. |
+| **Catppuccin** | Dark | `#cba6f7` | `#1e1e2e` | Soothing pastel theme based on Catppuccin Mocha. |
+| **Catppuccin Latte** | Light | `#1e66f5` | `#eff1f5` | Warm, low-strain light palette from Catppuccin. |
+| **Ethereal** | Dark | `#bd93f9` | `#16161e` | Deep vapor violet aesthetics. |
+| **Everforest** | Dark | `#a7c080` | `#2d353b` | Organic, natural forest green tones with soft contrast. |
+| **Flexoki Light** | Light | `#205ea6` | `#fffcf0` | Inky warm paper palette designed for long reading sessions. |
+| **Gruvbox** | Dark | `#d79921` | `#282828` | Classic retro groove with warm autumnal earth tones. |
+| **Hackerman** | Dark | `#00ff00` | `#0d1117` | High-voltage phosphor matrix green on deep carbon black. |
+| **Kanagawa** | Dark | `#7e9cd8` | `#1f1f28` | Inspired by classic Japanese woodblock prints with indigo tones. |
+| **Last Horizon** | Dark | `#e06c75` | `#1e1e1e` | Twilight dusk horizon aesthetic. |
+| **Lumon** | Dark | `#56b6c2` | `#1a1e24` | Corporate retro-minimalist Severance aesthetic. |
+| **Lupine** | Dark | `#b48ead` | `#2e3440` | Arctic wolf twilight with lilac and slate accents. |
+| **Matte Black** | Dark | `#767676` | `#121212` | Pure monochromatic ultra-matte minimalism. |
+| **Miasma** | Dark | `#78a760` | `#222222` | Muted swamp and fog organic tones. |
+| **Nord** | Dark | `#88c0d0` | `#2e3440` | Iconic arctic frost blue palette. |
+| **Osaka Jade** | Dark | `#50a14f` | `#1e2022` | Japanese garden moss and stone aesthetic. |
+| **Retro 82** | Dark | `#e5c07b` | `#1b1d1e` | 1982 vintage microcomputer warm phosphor. |
+| **Ristretto** | Dark | `#ff6188` | `#2c2525` | Rich roasted coffee dark hues. |
+| **Rose Pine** | Dark | `#ebbcba` | `#191724` | Moody pine needles and rose petals. |
+| **Solitude** | Dark | `#7daea3` | `#1e2021` | Quiet, peaceful deep twilight solitude. |
+| **Tokyo Night** | Dark | `#7aa2f7` | `#1a1b26` | Vibrant neon night lights across downtown Tokyo. |
+| **Vantablack** | Dark | `#ffffff` | `#000000` | Pitch black OLED background with pure white contrast. |
+| **White** | Light | `#000000` | `#ffffff` | Stark pristine high-contrast monochrome paper. |
+

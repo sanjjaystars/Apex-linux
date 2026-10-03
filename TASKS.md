@@ -41,7 +41,7 @@
 - [x] T4.2 Implement/port apex-theme-set and apex-theme-list; reload every app.
 - [x] T4.3 Create "Apex Dark" plus 3 more themes.
 - [x] T4.4 Write scripts/gen-wallpapers.sh (gradients/shapes only).
-- [ ] T4.5 Add theme previews and a docs/THEMES.md gallery table.
+- [x] T4.5 Add theme previews and a docs/THEMES.md gallery table.
 - [ ] T4.6 Test: switching through all themes leaves no app with mismatched colors (document the manual checklist; automate what you can).
 
 ## STAGE 5: Commands, menu, migrations, updates
