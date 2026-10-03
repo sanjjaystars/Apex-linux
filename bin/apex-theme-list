@@ -3,7 +3,21 @@
 # apex:summary=List available themes
 # apex:examples=apex theme list | apex theme set "Tokyo Night"
 
-{
-  find ~/.config/apex/themes/ -mindepth 1 -maxdepth 1 \( -type d -o -type l \) -printf '%f\n'
-  find "$APEX_PATH/themes/" -mindepth 1 -maxdepth 1 -type d -printf '%f\n'
-} | sort -u | sed -E 's/(^|-)([a-z])/\1\u\2/g; s/-/ /g'
+set -euo pipefail
+
+APEX_PATH="${APEX_PATH:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
+
+list_themes() {
+  local dir
+  for base in "$HOME/.config/apex/themes" "$APEX_PATH/themes"; do
+    if [[ -d "$base" ]]; then
+      for dir in "$base"/*; do
+        if [[ -d "$dir" ]]; then
+          basename "$dir"
+        fi
+      done
+    fi
+  done
+}
+
+list_themes | sort -u | awk -F'-' '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) substr($i,2); print}' OFS=' '

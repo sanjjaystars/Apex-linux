@@ -62,3 +62,6 @@ Result: tests/vm-smoke-test.sh created and verified.
 
 2026-10-03 14:31:10 | T4.1 | Authored comprehensive theme specification in docs/THEMES.md detailing theme directory contract, required and optional files, colors.toml 26-variable schema, template placeholder rules, target app configurations, and live reload pipeline. Ticked T4.1 in TASKS.md.
 Result: docs/THEMES.md created and verified.
+
+2026-10-03 14:32:50 | T4.2 | Verified and hardened bin/apex-theme-set and bin/apex-theme-list. Updated bin/apex-theme-list with portable pure-Bash scanning and POSIX-compliant awk title casing. Verified reload pipeline across all 17 application hooks. Shellcheck passed with 0 errors. Ticked T4.2 in TASKS.md.
+Result: apex-theme-set and apex-theme-list verified and hardened.
