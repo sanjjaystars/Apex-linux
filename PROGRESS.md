@@ -107,3 +107,6 @@ Result: iso/build-iso.sh created and verified via dry run.
 2026-10-03 15:08:00 | T6.6 | Implemented tests/iso-smoke-test.sh automated test harness and authored docs/ISO_TESTING.md. Detected host Darwin arm64 without qemu-system-x86_64 or mkarchiso; marked UNTESTED on current host per rules. Documented exact manual mkarchiso and QEMU UEFI boot commands, OVMF firmware lookup, and 7-point live installer verification checklist. Shellcheck passed with 0 errors. Ticked T6.6 in TASKS.md.
 Result: tests/iso-smoke-test.sh and docs/ISO_TESTING.md created and verified.
 
+2026-10-03 15:09:00 | T7.1 | Authored core project documentation suite: docs/INSTALL.md (system requirements, live guided ISO procedure, existing Arch bootstrap, post-install tuning), docs/TROUBLESHOOTING.md (system diagnostics, Snapper rollback recovery, pacman db.lck and keyring fixes, audio and NVIDIA Wayland guides), and docs/CONTRIBUTING.md (code of conduct, repository architecture, Bash 5 coding standards, quality gates, and PR guidelines). check-name-leaks.sh passed with 0 leaks. Ticked T7.1 in TASKS.md.
+Result: docs/INSTALL.md, docs/TROUBLESHOOTING.md, and docs/CONTRIBUTING.md created and verified.
+
