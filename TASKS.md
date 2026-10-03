@@ -22,7 +22,7 @@
 - [x] T2.2 Run dry-run, review the output, record surprises in DECISIONS.md.
 - [x] T2.3 Copy upstream files into the Apex tree (excluding .git, logos, wallpapers), then run --apply.
 - [x] T2.4 Replace upstream-owned URLs with placeholders from default/apex-env.
-- [ ] T2.5 Fix every path (~/.local/share/apex etc.) consistently. Grep to prove there are zero stray old paths.
+- [x] T2.5 Fix every path (~/.local/share/apex etc.) consistently. Grep to prove there are zero stray old paths.
 - [ ] T2.6 Write tests/check-name-leaks.sh that fails if any case form of the old name remains anywhere except THIRD_PARTY_NOTICES.md. Run it; it must pass.
 - [ ] T2.7 Run shellcheck on every script; fix errors.
 - [ ] T2.8 Replace branding assets (section 3, L3).

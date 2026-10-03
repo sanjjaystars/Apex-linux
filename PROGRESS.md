@@ -26,3 +26,6 @@ Result: Upstream codebase copied and rebranded to Apex.
 
 2026-10-03 14:02:40 | T2.4 | Replaced upstream-owned URLs across pacman configs, mirrorlists, error traps, skill descriptors, and debug/upload scripts with placeholders and variables defined in default/apex-env (APEX_GIT_URL, APEX_RAW_URL, APEX_REPO_URL, APEX_MIRROR_URL, APEX_LOGS_URL). Updated pacman mirrorlists to official geo.mirror.pkgbuild.com. Ticked T2.4 in TASKS.md.
 Result: Upstream URLs replaced with Apex environment variables/placeholders.
+
+2026-10-03 14:04:10 | T2.5 | Audited all filesystem and variable paths across the codebase for stray upstream paths (share/omarchy, config/omarchy, state/omarchy, /usr/share/omarchy, /etc/omarchy, /var/lib/omarchy, /dev/shm/omarchy, com.omarchy, org.omarchy). Rebranded .github templates and security policy. Grep confirmed 0 stray paths remain. Ticked T2.5 in TASKS.md.
+Result: All paths consistently point to apex, 0 stray paths confirmed.
