@@ -1,0 +1,432 @@
+#!/bin/bash
+# Apex Linux Guided Installer
+# Comprehensive, interactive TUI installer for bare metal and virtual machines.
+# Supports UEFI, LUKS2 encryption, Btrfs subvolumes, Snapper, Limine bootloader,
+# and offline/live deployment of Apex Linux.
+
+set -euo pipefail
+
+# Invariant: Must run as root
+if (( EUID != 0 )); then
+  echo "Error: The Apex Guided Installer must be run as root." >&2
+  exit 1
+fi
+
+LOG_FILE="/var/log/apex-installer.log"
+exec > >(tee -a "$LOG_FILE") 2>&1
+
+echo "========================================================"
+echo "          APEX LINUX GUIDED INSTALLER                   "
+echo "========================================================"
+echo "Log file: $LOG_FILE"
+echo ""
+
+# Configuration variables
+TARGET_DISK=""
+ENABLE_LUKS="no"
+LUKS_PASSPHRASE=""
+KEYBOARD_LAYOUT="us"
+USERNAME=""
+USER_PASSWORD=""
+HOSTNAME="apex-linux"
+TIMEZONE="UTC"
+MOUNT_DIR="/mnt"
+
+# Colors
+C_RESET="\033[0m"
+C_BOLD="\033[1m"
+C_CYAN="\033[1;36m"
+C_GREEN="\033[1;32m"
+C_YELLOW="\033[1;33m"
+C_RED="\033[1;31m"
+
+notice() {
+  printf "${C_YELLOW}==> %s${C_RESET}\n" "$1"
+}
+
+info() {
+  printf "${C_CYAN}  -> %s${C_RESET}\n" "$1"
+}
+
+success() {
+  printf "${C_GREEN}✓ %s${C_RESET}\n" "$1"
+}
+
+die() {
+  printf "${C_RED}ERROR: %s${C_RESET}\n" "$1" >&2
+  exit 1
+}
+
+# Preflight checks
+check_environment() {
+  notice "Checking hardware environment..."
+
+  # Check UEFI
+  if [[ ! -d /sys/firmware/efi/efivars ]]; then
+    die "Apex Linux requires UEFI boot mode. Legacy BIOS is not supported for guided installation."
+  fi
+  success "UEFI boot mode detected."
+
+  # Check minimum RAM (at least 2GB)
+  local total_mem_kb
+  total_mem_kb=$(awk '/MemTotal/ {print $2}' /proc/meminfo)
+  if (( total_mem_kb < 2000000 )); then
+    notice "Warning: Less than 2GB RAM detected (${total_mem_kb} kB). Installation may be slow."
+  else
+    success "Sufficient RAM detected."
+  fi
+}
+
+# Select target installation disk
+select_disk() {
+  notice "Scanning available storage drives..."
+  echo ""
+
+  # List non-loop, non-ram disks
+  mapfile -t AVAILABLE_DISKS < <(lsblk -dpno NAME,SIZE,MODEL,TYPE | grep -E 'disk' | awk '{print $1 " (" $2 ", " $3 ")"}')
+
+  if (( ${#AVAILABLE_DISKS[@]} == 0 )); then
+    die "No suitable installation disks found on this system."
+  fi
+
+  echo "Available disks:"
+  local i=1
+  for d in "${AVAILABLE_DISKS[@]}"; do
+    echo "  [$i] $d"
+    ((i++))
+  done
+  echo ""
+
+  if [[ -n "${APEX_TARGET_DISK:-}" ]]; then
+    TARGET_DISK="$APEX_TARGET_DISK"
+    info "Using target disk from environment: $TARGET_DISK"
+  else
+    read -rp "Select disk number [1-${#AVAILABLE_DISKS[@]}]: " choice
+    if [[ ! $choice =~ ^[0-9]+$ ]] || (( choice < 1 || choice > ${#AVAILABLE_DISKS[@]} )); then
+      die "Invalid disk selection."
+    fi
+    TARGET_DISK=$(echo "${AVAILABLE_DISKS[$((choice - 1))]}" | awk '{print $1}')
+  fi
+
+  if [[ ! -b "$TARGET_DISK" ]]; then
+    die "Selected disk $TARGET_DISK is not a valid block device."
+  fi
+
+  success "Selected target disk: $TARGET_DISK"
+}
+
+# Configure installation options
+configure_options() {
+  echo ""
+  notice "System Configuration"
+
+  # Hostname
+  read -rp "Enter system hostname [default: apex-linux]: " input_hostname
+  HOSTNAME="${input_hostname:-apex-linux}"
+
+  # Username
+  while true; do
+    read -rp "Enter username for primary user: " USERNAME
+    if [[ $USERNAME =~ ^[a-z_][a-z0-9_-]*$ ]] && [[ $USERNAME != "root" ]]; then
+      break
+    fi
+    echo "Invalid username. Must start with a lowercase letter and contain only lowercase letters, digits, underscores, or hyphens."
+  done
+
+  # User Password
+  while true; do
+    read -rsp "Enter password for $USERNAME: " USER_PASSWORD
+    echo ""
+    read -rsp "Confirm password for $USERNAME: " USER_PASSWORD_CONFIRM
+    echo ""
+    if [[ -n $USER_PASSWORD && $USER_PASSWORD == "$USER_PASSWORD_CONFIRM" ]]; then
+      break
+    fi
+    echo "Passwords do not match or are empty. Please try again."
+  done
+
+  # Disk Encryption
+  read -rp "Enable LUKS2 full-disk encryption? [y/N]: " luks_choice
+  if [[ $luks_choice =~ ^[Yy] ]]; then
+    ENABLE_LUKS="yes"
+    while true; do
+      read -rsp "Enter LUKS encryption passphrase: " LUKS_PASSPHRASE
+      echo ""
+      read -rsp "Confirm LUKS encryption passphrase: " LUKS_PASSPHRASE_CONFIRM
+      echo ""
+      if [[ -n $LUKS_PASSPHRASE && $LUKS_PASSPHRASE == "$LUKS_PASSPHRASE_CONFIRM" ]]; then
+        break
+      fi
+      echo "Passphrases do not match or are empty. Please try again."
+    done
+  fi
+
+  # Timezone detection or prompt
+  if [[ -f /etc/timezone ]]; then
+    TIMEZONE=$(cat /etc/timezone)
+  elif command -v timedatectl >/dev/null 2>&1; then
+    TIMEZONE=$(timedatectl show --property=Timezone --value 2>/dev/null || echo "UTC")
+  fi
+  read -rp "Enter timezone [default: $TIMEZONE]: " input_tz
+  TIMEZONE="${input_tz:-$TIMEZONE}"
+}
+
+# Display summary and confirm destructive operation
+confirm_installation() {
+  echo ""
+  echo "========================================================"
+  printf "${C_BOLD}             INSTALLATION SUMMARY                       ${C_RESET}\n"
+  echo "========================================================"
+  echo "  Target Disk:      $TARGET_DISK"
+  echo "  Partition Layout: ESP (1024MB FAT32) + Root (Btrfs)"
+  echo "  Btrfs Subvolumes: @, @home, @snapshots, @var_log, @var_cache"
+  echo "  Encryption:       $ENABLE_LUKS"
+  echo "  Hostname:         $HOSTNAME"
+  echo "  Primary User:     $USERNAME"
+  echo "  Timezone:         $TIMEZONE"
+  echo "========================================================"
+  printf "${C_RED}${C_BOLD}WARNING: ALL EXISTING DATA ON %s WILL BE DESTROYED!${C_RESET}\n" "$TARGET_DISK"
+  echo ""
+
+  if [[ "${TEST_TARGET:-}" == "1" ]]; then
+    info "Automated test mode active (TEST_TARGET=1). Skipping confirmation."
+    return 0
+  fi
+
+  read -rp "Type 'YES' in all capital letters to continue: " confirm
+  if [[ $confirm != "YES" ]]; then
+    die "Installation aborted by user."
+  fi
+}
+
+# Partition and format disk
+partition_and_format() {
+  notice "Partitioning target disk $TARGET_DISK..."
+
+  # Wipe existing partition signatures
+  wipefs -af "$TARGET_DISK"
+  sgdisk -Z "$TARGET_DISK"
+
+  # Create GPT layout:
+  # Partition 1: 1024MB EFI System Partition (type EF00)
+  # Partition 2: Rest of disk Linux Root (type 8300 or 8309 for LUKS)
+  sgdisk -n 1:0:+1024M -t 1:ef00 -c 1:"EFI System Partition" "$TARGET_DISK"
+  if [[ $ENABLE_LUKS == "yes" ]]; then
+    sgdisk -n 2:0:0 -t 2:8309 -c 2:"Apex Linux Encrypted Root" "$TARGET_DISK"
+  else
+    sgdisk -n 2:0:0 -t 2:8300 -c 2:"Apex Linux Root" "$TARGET_DISK"
+  fi
+
+  partprobe "$TARGET_DISK"
+  sleep 2
+
+  # Determine partition device names (handling nvme/mmc p1 vs sda1)
+  local part_prefix="${TARGET_DISK}"
+  if [[ $TARGET_DISK =~ [0-9]$ ]]; then
+    part_prefix="${TARGET_DISK}p"
+  fi
+
+  EFI_PART="${part_prefix}1"
+  ROOT_PART="${part_prefix}2"
+
+  if [[ ! -b $EFI_PART || ! -b $ROOT_PART ]]; then
+    die "Failed to locate newly created partitions ($EFI_PART, $ROOT_PART)."
+  fi
+
+  notice "Formatting EFI partition $EFI_PART as FAT32..."
+  mkfs.fat -F 32 -n "APEX_ESP" "$EFI_PART"
+
+  TARGET_BTRFS_DEV="$ROOT_PART"
+
+  # Setup LUKS if enabled
+  if [[ $ENABLE_LUKS == "yes" ]]; then
+    notice "Configuring LUKS2 encryption on $ROOT_PART..."
+    echo -n "$LUKS_PASSPHRASE" | cryptsetup luksFormat --type luks2 --pbkdf argon2id "$ROOT_PART" -
+    echo -n "$LUKS_PASSPHRASE" | cryptsetup open "$ROOT_PART" cryptroot -
+    TARGET_BTRFS_DEV="/dev/mapper/cryptroot"
+  fi
+
+  notice "Formatting $TARGET_BTRFS_DEV as Btrfs..."
+  mkfs.btrfs -f -L "APEX_ROOT" "$TARGET_BTRFS_DEV"
+
+  notice "Creating Btrfs subvolumes (@, @home, @snapshots, @var_log, @var_cache)..."
+  mount "$TARGET_BTRFS_DEV" "$MOUNT_DIR"
+  btrfs subvolume create "$MOUNT_DIR/@"
+  btrfs subvolume create "$MOUNT_DIR/@home"
+  btrfs subvolume create "$MOUNT_DIR/@snapshots"
+  btrfs subvolume create "$MOUNT_DIR/@var_log"
+  btrfs subvolume create "$MOUNT_DIR/@var_cache"
+  umount "$MOUNT_DIR"
+
+  notice "Mounting Btrfs layout to $MOUNT_DIR..."
+  mount -o noatime,compress=zstd:3,subvol=@ "$TARGET_BTRFS_DEV" "$MOUNT_DIR"
+
+  mkdir -p "$MOUNT_DIR"/{home,.snapshots,var/log,var/cache,efi}
+  mount -o noatime,compress=zstd:3,subvol=@home "$TARGET_BTRFS_DEV" "$MOUNT_DIR/home"
+  mount -o noatime,compress=zstd:3,subvol=@snapshots "$TARGET_BTRFS_DEV" "$MOUNT_DIR/.snapshots"
+  mount -o noatime,compress=zstd:3,subvol=@var_log "$TARGET_BTRFS_DEV" "$MOUNT_DIR/var/log"
+  mount -o noatime,compress=zstd:3,subvol=@var_cache "$TARGET_BTRFS_DEV" "$MOUNT_DIR/var/cache"
+
+  notice "Mounting EFI partition to $MOUNT_DIR/efi..."
+  mount "$EFI_PART" "$MOUNT_DIR/efi"
+
+  success "Partitions formatted and mounted successfully."
+}
+
+# Install base packages
+install_base_system() {
+  notice "Installing base system packages via pacstrap..."
+
+  local base_packages=(
+    base
+    base-devel
+    linux
+    linux-firmware
+    btrfs-progs
+    cryptsetup
+    snapper
+    sudo
+    git
+    networkmanager
+    efibootmgr
+    limine
+    bash
+    bash-completion
+    neovim
+    which
+  )
+
+  pacstrap -K "$MOUNT_DIR" "${base_packages[@]}"
+  success "Base packages installed."
+
+  notice "Generating filesystem mount table (fstab)..."
+  genfstab -U "$MOUNT_DIR" >> "$MOUNT_DIR/etc/fstab"
+  success "fstab generated."
+}
+
+# Configure target system
+configure_system() {
+  notice "Configuring timezone, locale, and network..."
+
+  # Timezone
+  arch-chroot "$MOUNT_DIR" ln -sf "/usr/share/zoneinfo/$TIMEZONE" /etc/localtime
+  arch-chroot "$MOUNT_DIR" hwclock --systohc
+
+  # Locale
+  echo "en_US.UTF-8 UTF-8" >> "$MOUNT_DIR/etc/locale.gen"
+  arch-chroot "$MOUNT_DIR" locale-gen
+  echo "LANG=en_US.UTF-8" > "$MOUNT_DIR/etc/locale.conf"
+  echo "KEYMAP=$KEYBOARD_LAYOUT" > "$MOUNT_DIR/etc/vconsole.conf"
+
+  # Hostname
+  echo "$HOSTNAME" > "$MOUNT_DIR/etc/hostname"
+  cat <<EOF > "$MOUNT_DIR/etc/hosts"
+127.0.0.1   localhost
+::1         localhost
+127.0.1.1   $HOSTNAME.localdomain $HOSTNAME
+EOF
+
+  # Enable NetworkManager
+  arch-chroot "$MOUNT_DIR" systemctl enable NetworkManager.service
+
+  # Configure Primary User & Sudo
+  notice "Creating user account $USERNAME..."
+  arch-chroot "$MOUNT_DIR" useradd -m -G wheel,storage,power,audio,video -s /bin/bash "$USERNAME"
+  echo "$USERNAME:$USER_PASSWORD" | arch-chroot "$MOUNT_DIR" chpasswd
+  echo "root:$USER_PASSWORD" | arch-chroot "$MOUNT_DIR" chpasswd
+
+  # Sudo configuration for wheel group
+  mkdir -p "$MOUNT_DIR/etc/sudoers.d"
+  echo "%wheel ALL=(ALL:ALL) ALL" > "$MOUNT_DIR/etc/sudoers.d/wheel"
+  chmod 440 "$MOUNT_DIR/etc/sudoers.d/wheel"
+
+  # Configure mkinitcpio for Btrfs and LUKS
+  notice "Configuring mkinitcpio..."
+  if [[ $ENABLE_LUKS == "yes" ]]; then
+    sed -i 's/^HOOKS=.*/HOOKS=(base udev autodetect modconf kms keyboard keymap consolefont block encrypt filesystems fsck)/' "$MOUNT_DIR/etc/mkinitcpio.conf"
+  else
+    sed -i 's/^HOOKS=.*/HOOKS=(base udev autodetect modconf kms keyboard keymap consolefont block filesystems fsck)/' "$MOUNT_DIR/etc/mkinitcpio.conf"
+  fi
+  arch-chroot "$MOUNT_DIR" mkinitcpio -P
+
+  # Copy Apex Linux repository into target system
+  if [[ -d /opt/apex-linux ]]; then
+    notice "Deploying Apex Linux distribution framework into target system..."
+    mkdir -p "$MOUNT_DIR/opt/apex-linux"
+    rsync -a --exclude='.git' /opt/apex-linux/ "$MOUNT_DIR/opt/apex-linux/"
+    chmod -R u=rwX,go=rX "$MOUNT_DIR/opt/apex-linux"
+  fi
+
+  # Bootloader setup (Limine)
+  notice "Installing and configuring Limine UEFI bootloader..."
+  mkdir -p "$MOUNT_DIR/efi/EFI/BOOT"
+  mkdir -p "$MOUNT_DIR/efi/EFI/limine"
+
+  if [[ -f /usr/share/limine/BOOTX64.EFI ]]; then
+    cp /usr/share/limine/BOOTX64.EFI "$MOUNT_DIR/efi/EFI/BOOT/BOOTX64.EFI"
+  elif [[ -f "$MOUNT_DIR/usr/share/limine/BOOTX64.EFI" ]]; then
+    cp "$MOUNT_DIR/usr/share/limine/BOOTX64.EFI" "$MOUNT_DIR/efi/EFI/BOOT/BOOTX64.EFI"
+  fi
+
+  local root_uuid
+  local root_param
+  if [[ $ENABLE_LUKS == "yes" ]]; then
+    local luks_uuid
+    luks_uuid=$(blkid -s UUID -o value "$ROOT_PART")
+    root_param="cryptdevice=UUID=${luks_uuid}:cryptroot root=/dev/mapper/cryptroot rootflags=subvol=@"
+  else
+    root_uuid=$(blkid -s UUID -o value "$ROOT_PART")
+    root_param="root=UUID=${root_uuid} rootflags=subvol=@"
+  fi
+
+  cat <<EOF > "$MOUNT_DIR/efi/limine.conf"
+timeout: 5
+default_entry: 1
+
+/Apex Linux
+    protocol: linux
+    kernel_path: efi:///boot/vmlinuz-linux
+    cmdline: ${root_param} rw quiet splash loglevel=3
+    initrd_path: efi:///boot/initramfs-linux.img
+
+/Apex Linux (Fallback Recovery)
+    protocol: linux
+    kernel_path: efi:///boot/vmlinuz-linux
+    cmdline: ${root_param} rw
+    initrd_path: efi:///boot/initramfs-linux-fallback.img
+EOF
+
+  success "System configuration complete."
+}
+
+# Unmount filesystems safely
+cleanup() {
+  notice "Synchronizing and unmounting target filesystems..."
+  sync
+  umount -R "$MOUNT_DIR" 2>/dev/null || true
+  if [[ $ENABLE_LUKS == "yes" && -b /dev/mapper/cryptroot ]]; then
+    cryptsetup close cryptroot 2>/dev/null || true
+  fi
+  success "Unmounted cleanly."
+}
+
+main() {
+  check_environment
+  select_disk
+  configure_options
+  confirm_installation
+  partition_and_format
+  install_base_system
+  configure_system
+  cleanup
+
+  echo ""
+  echo "========================================================"
+  printf "${C_GREEN}${C_BOLD}   APEX LINUX INSTALLATION COMPLETED SUCCESSFULLY!      ${C_RESET}\n"
+  echo "========================================================"
+  echo "You can now reboot your computer into your new Apex Linux system."
+  echo "Remove the live installation media before rebooting."
+  echo ""
+}
+
+main "$@"

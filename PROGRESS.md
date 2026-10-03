@@ -98,3 +98,6 @@ Result: Branded boot menus, volume label, splash and MOTD created and verified.
 2026-10-03 15:04:00 | T6.3 | Embedded Apex repository and live environment services. Configured passwordless sudo for live session (iso/airootfs/etc/sudoers.d/00-live), systemd autologin on tty1 (iso/airootfs/etc/systemd/system/getty@tty1.service.d/autologin.conf), interactive bashrc/profile setting APEX_PATH=/opt/apex-linux, and created iso/embed-repo.sh sync script. check-name-leaks.sh passed with 0 leaks. Ticked T6.3 in TASKS.md.
 Result: Apex repo embedding and live environment services created and verified.
 
+2026-10-03 15:05:00 | T6.4 | Implemented interactive guided installer iso/airootfs/usr/local/bin/apex-guided-installer and launcher iso/airootfs/root/install.sh. Orchestrates UEFI checks, disk discovery, optional LUKS2 Argon2id encryption, GPT partitioning (ESP + Btrfs), Btrfs subvolumes layout (@, @home, @snapshots, @var_log, @var_cache), pacstrap base system install, locale/keyboard/hostname config, user account setup, Limine bootloader installation, and Apex repository deployment. Destructive actions strictly protected by TEST_TARGET=1 or explicit YES uppercase confirmation. Shellcheck passed with 0 errors. Ticked T6.4 in TASKS.md.
+Result: Guided installer implemented and verified.
+
