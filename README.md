@@ -8,11 +8,11 @@ Apex is designed to be a sleek, powerful, modern Wayland desktop environment foc
 
 ### 🚀 Quick Links & Downloads
 
-[![Download Apex Linux ISO](https://img.shields.io/badge/Download-Apex_Linux_ISO_(v1.0.0)-38bdf8?style=for-the-badge&logo=arch-linux&logoColor=white)](https://github.com/sanjjaystars/Apex-linux/releases/latest/download/apex-linux-x86_64.iso)
-[![GitHub Releases](https://img.shields.io/badge/Releases-All_Versions_%26_Checksums-818cf8?style=for-the-badge&logo=github&logoColor=white)](https://github.com/sanjjaystars/Apex-linux/releases)
+[![Download Apex Linux ISO](https://img.shields.io/badge/Download-Apex_Linux_ISO_(v1.0.0)-38bdf8?style=for-the-badge&logo=arch-linux&logoColor=white)](https://github.com/sanjjaystars/Apex-linux/releases/download/v1.0.0/apex-linux-2026.10.03-x86_64.iso)
+[![GitHub Releases](https://img.shields.io/badge/Releases-v1.0.0_Release_Page-818cf8?style=for-the-badge&logo=github&logoColor=white)](https://github.com/sanjjaystars/Apex-linux/releases/tag/v1.0.0)
 [![Official Website](https://img.shields.io/badge/Website-sanjjaystars.github.io%2FApex--linux-10b981?style=for-the-badge&logo=google-chrome&logoColor=white)](https://sanjjaystars.github.io/Apex-linux/)
 
-**Direct ISO Link:** [Download `apex-linux-x86_64.iso`](https://github.com/sanjjaystars/Apex-linux/releases/latest/download/apex-linux-x86_64.iso) • [SHA256 Checksums](https://github.com/sanjjaystars/Apex-linux/releases/latest/download/sha256sums.txt)
+**Direct ISO Link (1.22 GB):** [Download `apex-linux-2026.10.03-x86_64.iso`](https://github.com/sanjjaystars/Apex-linux/releases/download/v1.0.0/apex-linux-2026.10.03-x86_64.iso) • [SHA256 Checksum](https://github.com/sanjjaystars/Apex-linux/releases/download/v1.0.0/apex-linux-2026.10.03-x86_64.iso.sha256) • [View Release Page](https://github.com/sanjjaystars/Apex-linux/releases/tag/v1.0.0)
 
 #### ⚡ 1-Command Live Install (From Any Arch Linux USB Media)
 ```bash

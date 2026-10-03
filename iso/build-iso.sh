@@ -191,6 +191,12 @@ build_iso() {
     local checksum
     checksum=$(sha256sum "$iso_file" | awk '{print $1}')
     echo "$checksum  $(basename "$iso_file")" > "${iso_file}.sha256"
+
+    # Also produce unversioned apex-linux-x86_64.iso for persistent latest download links
+    if [[ $(basename "$iso_file") != "apex-linux-x86_64.iso" ]]; then
+      cp -f "$iso_file" "$OUT_DIR/apex-linux-x86_64.iso"
+      echo "$checksum  apex-linux-x86_64.iso" > "$OUT_DIR/apex-linux-x86_64.iso.sha256"
+    fi
     echo ""
     echo "========================================================"
     printf "${C_GREEN}${C_BOLD}   APEX LINUX ISO CREATED SUCCESSFULLY!                 ${C_RESET}\n"
