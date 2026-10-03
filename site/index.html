@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apex Linux — The Independent Arch Linux Desktop</title>
+  <meta name="description" content="Download Apex Linux: an independent, sleek, and high-performance Arch Linux distribution featuring Hyprland, Btrfs with Snapper, LUKS2 encryption, and 26 dynamic themes.">
+  <meta name="theme-color" content="#030712">
+  <link rel="icon" type="image/png" href="assets/icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Header Navigation -->
+  <header>
+    <div class="nav-container">
+      <a href="#" class="brand-link" id="nav-brand">
+        <img src="assets/icon.png" alt="Apex Linux Logo" class="brand-icon">
+        <span>APEX LINUX</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#themes">Themes</a></li>
+        <li><a href="#install">Install Guide</a></li>
+        <li><a href="#specs">Requirements</a></li>
+        <li><a href="https://github.com/sanjjaystars/Apex-linux" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="#download" class="nav-btn" id="nav-download-btn">Download ISO</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main>
+    <section class="hero" id="download">
+      <div class="release-pill">
+        <span class="pulse-dot"></span>
+        <span>Latest Release v1.0.0 • Arch Linux Base</span>
+      </div>
+
+      <h1 class="hero-title">
+        The Independent <span class="gradient-text">Arch Linux</span> Desktop
+      </h1>
+
+      <p class="hero-subtitle">
+        Engineered for speed, ergonomics, and aesthetics. Featuring Hyprland, Quickshell, automated Btrfs snapshots, LUKS2 security, and 26 dynamic themes.
+      </p>
+
+      <!-- Primary Action Buttons -->
+      <div class="cta-group">
+        <a href="https://github.com/sanjjaystars/Apex-linux/releases/latest/download/apex-linux-x86_64.iso" class="btn-primary" id="hero-download-iso">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Download Apex Linux ISO
+        </a>
+
+        <a href="https://github.com/sanjjaystars/Apex-linux/releases" class="btn-secondary" id="hero-view-releases" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+          </svg>
+          All Releases & Checksums
+        </a>
+      </div>
+
+      <!-- Quick Web Install Terminal Box -->
+      <div class="quick-install-box">
+        <div class="terminal-header">
+          <div class="terminal-dots">
+            <span class="dot dot-red"></span>
+            <span class="dot dot-yellow"></span>
+            <span class="dot dot-green"></span>
+          </div>
+          <span class="terminal-title">1-Command Netboot Install (Any Arch Live Media)</span>
+        </div>
+        <div class="terminal-body">
+          <code id="install-cmd">bash &lt;(curl -fsSL https://raw.githubusercontent.com/sanjjaystars/Apex-linux/main/boot.sh) --install</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstallCommand()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span id="copy-text">Copy</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Key Features Section -->
+    <section class="section" id="features">
+      <div class="section-header">
+        <div class="section-tag">Architecture</div>
+        <h2 class="section-title">Built Without Compromise</h2>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Wayland & Hyprland</h3>
+          <p>Buttery smooth tiling window manager powered by wlroots and custom Quickshell integration. Optimized for ultra-low latency and multi-monitor setups.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🛡️</div>
+          <h3>Btrfs & Snapper Rollback</h3>
+          <p>Bulletproof file system with subvolumes for root, home, and snapshots. Automated pre-update snapshots allow rolling back any breaking change instantly.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <h3>LUKS2 Full-Disk Encryption</h3>
+          <p>Argon2id cryptographic hardening safeguarding your storage drive, user profiles, and sensitive data from physical access.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🎨</div>
+          <h3>26 Dynamic Themes</h3>
+          <p>Instant live switching across 26 curated themes with zero reload delay across terminals, desktop bar, editors, and window borders.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🚀</div>
+          <h3>Guided Installer</h3>
+          <p>Automated, interactive installer providing disk detection, UEFI configuration, Limine bootloader setup, and instant package deployment.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🛠️</div>
+          <h3>480+ Apex CLI Commands</h3>
+          <p>A rich ecosystem of unified CLI helpers for hardware detection, media controls, audio routing, git branches, and desktop shortcuts.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Theme Showcase -->
+    <section class="section" id="themes">
+      <div class="section-header">
+        <div class="section-tag">Aesthetics</div>
+        <h2 class="section-title">Flagship Themes</h2>
+      </div>
+
+      <div class="theme-showcase">
+        <div class="theme-tabs">
+          <button class="theme-tab-btn active" onclick="switchTheme('dark')" id="tab-dark">Apex Dark</button>
+          <button class="theme-tab-btn" onclick="switchTheme('light')" id="tab-light">Apex Light</button>
+          <button class="theme-tab-btn" onclick="switchTheme('crimson')" id="tab-crimson">Apex Crimson</button>
+          <button class="theme-tab-btn" onclick="switchTheme('emerald')" id="tab-emerald">Apex Emerald</button>
+        </div>
+
+        <div class="theme-preview-card" id="theme-card">
+          <div class="swatches" id="theme-swatches">
+            <div class="swatch" style="background: #38bdf8;"></div>
+            <div class="swatch" style="background: #020617;"></div>
+            <div class="swatch" style="background: #f8fafc;"></div>
+            <div class="swatch" style="background: #0ea5e9;"></div>
+          </div>
+          <h3 id="theme-title" style="font-family: var(--font-heading); font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff;">Apex Dark</h3>
+          <p id="theme-desc" style="color: var(--text-muted); max-width: 600px;">Signature deep slate palette with electric sky cyan active borders and high-contrast typography.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Installation Steps Guide -->
+    <section class="section" id="install">
+      <div class="section-header">
+        <div class="section-tag">Getting Started</div>
+        <h2 class="section-title">Simple 3-Step Installation</h2>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">1️⃣</div>
+          <h3>Download & Flash</h3>
+          <p>Download the ISO above and flash it to a USB drive using <code>dd</code>, Ventoy, or BalenaEtcher:</p>
+          <p style="margin-top: 0.5rem; font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent);">sudo dd if=apex-linux.iso of=/dev/sdX bs=4M</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">2️⃣</div>
+          <h3>Boot Live USB</h3>
+          <p>Reboot your PC and select UEFI boot. Apex Linux will automatically log into the live terminal with an ANSI welcome banner.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">3️⃣</div>
+          <h3>Run Installer</h3>
+          <p>Launch the guided installer with a single command:</p>
+          <p style="margin-top: 0.5rem; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent);">apex-guided-installer</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- System Requirements Table -->
+    <section class="section" id="specs">
+      <div class="section-header">
+        <div class="section-tag">Specifications</div>
+        <h2 class="section-title">System Requirements</h2>
+      </div>
+
+      <table class="specs-table">
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Minimum Requirement</th>
+            <th>Recommended</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Processor</strong></td>
+            <td>64-bit x86_64 CPU</td>
+            <td>Modern Multi-core Intel / AMD</td>
+          </tr>
+          <tr>
+            <td><strong>RAM</strong></td>
+            <td>2 GB RAM</td>
+            <td>8 GB or higher</td>
+          </tr>
+          <tr>
+            <td><strong>Storage</strong></td>
+            <td>20 GB Free Disk Space</td>
+            <td>64 GB+ NVMe or SSD</td>
+          </tr>
+          <tr>
+            <td><strong>Firmware</strong></td>
+            <td>UEFI 64-bit</td>
+            <td>UEFI (Secure Boot disabled)</td>
+          </tr>
+          <tr>
+            <td><strong>Graphics</strong></td>
+            <td>KMS-compatible GPU (Intel, AMD, NVIDIA)</td>
+            <td>Vulkan & Wayland hardware accelerated</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <ul class="footer-links">
+      <li><a href="https://github.com/sanjjaystars/Apex-linux" target="_blank" rel="noopener">GitHub Repository</a></li>
+      <li><a href="https://github.com/sanjjaystars/Apex-linux/releases" target="_blank" rel="noopener">Releases</a></li>
+      <li><a href="https://github.com/sanjjaystars/Apex-linux/blob/main/docs/INSTALL.md" target="_blank" rel="noopener">Install Docs</a></li>
+      <li><a href="https://github.com/sanjjaystars/Apex-linux/blob/main/docs/KEYS.md" target="_blank" rel="noopener">Keybindings</a></li>
+      <li><a href="https://github.com/sanjjaystars/Apex-linux/blob/main/LICENSE" target="_blank" rel="noopener">License</a></li>
+    </ul>
+    <p>Apex Linux is an independent project based on Arch Linux. Released under the MIT License.</p>
+  </footer>
+
+  <script>
+    function copyInstallCommand() {
+      const cmd = "bash <(curl -fsSL https://raw.githubusercontent.com/sanjjaystars/Apex-linux/main/boot.sh) --install";
+      navigator.clipboard.writeText(cmd).then(() => {
+        const text = document.getElementById("copy-text");
+        text.innerText = "Copied!";
+        setTimeout(() => { text.innerText = "Copy"; }, 2000);
+      });
+    }
+
+    const themes = {
+      dark: {
+        title: "Apex Dark",
+        desc: "Signature deep slate palette with electric sky cyan active borders and high-contrast typography.",
+        swatches: ["#38bdf8", "#020617", "#f8fafc", "#0ea5e9"]
+      },
+      light: {
+        title: "Apex Light",
+        desc: "High-contrast paper frost theme designed for bright rooms and daylight readability.",
+        swatches: ["#0284c7", "#f8fafc", "#0f172a", "#38bdf8"]
+      },
+      crimson: {
+        title: "Apex Crimson",
+        desc: "Stealth obsidian charcoal background accented with vivid carmine rose window highlights.",
+        swatches: ["#f43f5e", "#0a0a0c", "#fff1f2", "#be123c"]
+      },
+      emerald: {
+        title: "Apex Emerald",
+        desc: "Calming dark forest aesthetic paired with crisp mint emerald accents for focused coding sessions.",
+        swatches: ["#10b981", "#03140d", "#ecfdf5", "#059669"]
+      }
+    };
+
+    function switchTheme(key) {
+      document.querySelectorAll(".theme-tab-btn").forEach(btn => btn.classList.remove("active"));
+      document.getElementById("tab-" + key).classList.add("active");
+
+      const t = themes[key];
+      document.getElementById("theme-title").innerText = t.title;
+      document.getElementById("theme-desc").innerText = t.desc;
+
+      const swatchesContainer = document.getElementById("theme-swatches");
+      swatchesContainer.innerHTML = t.swatches.map(color => `<div class="swatch" style="background: ${color};"></div>`).join("");
+    }
+  </script>
+</body>
+</html>

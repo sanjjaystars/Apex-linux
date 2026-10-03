@@ -4,6 +4,23 @@ Apex Linux is an independent project based on Arch Linux and inspired by Omarchy
 
 Apex is designed to be a sleek, powerful, modern Wayland desktop environment focused on ergonomics, agentic workflows, beautiful aesthetics, and speed.
 
+---
+
+### 🚀 Quick Links & Downloads
+
+[![Download Apex Linux ISO](https://img.shields.io/badge/Download-Apex_Linux_ISO_(v1.0.0)-38bdf8?style=for-the-badge&logo=arch-linux&logoColor=white)](https://github.com/sanjjaystars/Apex-linux/releases/latest/download/apex-linux-x86_64.iso)
+[![GitHub Releases](https://img.shields.io/badge/Releases-All_Versions_%26_Checksums-818cf8?style=for-the-badge&logo=github&logoColor=white)](https://github.com/sanjjaystars/Apex-linux/releases)
+[![Official Website](https://img.shields.io/badge/Website-sanjjaystars.github.io%2FApex--linux-10b981?style=for-the-badge&logo=google-chrome&logoColor=white)](https://sanjjaystars.github.io/Apex-linux/)
+
+**Direct ISO Link:** [Download `apex-linux-x86_64.iso`](https://github.com/sanjjaystars/Apex-linux/releases/latest/download/apex-linux-x86_64.iso) • [SHA256 Checksums](https://github.com/sanjjaystars/Apex-linux/releases/latest/download/sha256sums.txt)
+
+#### ⚡ 1-Command Live Install (From Any Arch Linux USB Media)
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/sanjjaystars/Apex-linux/main/boot.sh) --install
+```
+
+---
+
 ## Overview
 
 - **Core Distribution**: Arch Linux
