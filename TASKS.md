@@ -8,14 +8,14 @@
 
 ## STAGE 1: Audit (no code changes to Apex yet)
 - [x] T1.1 Map upstream's install flow: boot.sh -> install.sh -> each install/ stage. Write docs/AUDIT.md with one paragraph per stage.
-- [ ] T1.2 List every command in bin/ with a one-line purpose each.
-- [ ] T1.3 List every config directory and which app it configures.
-- [ ] T1.4 Extract the complete package list (official vs AUR) into docs/PACKAGES_UPSTREAM.md.
-- [ ] T1.5 List every external URL and domain upstream uses -> docs/EXTERNAL_URLS.md, marking each: KEEP / REPLACE / REMOVE.
-- [ ] T1.6 List every occurrence of the name in all case forms and paths: counts per file -> docs/NAME_OCCURRENCES.md.
-- [ ] T1.7 Document how themes work and how the theme switcher reloads each app.
-- [ ] T1.8 Document how migrations work.
-- [ ] T1.9 Document how the ISO is built and how the guided installer works.
+- [x] T1.2 List every command in bin/ with a one-line purpose each.
+- [x] T1.3 List every config directory and which app it configures.
+- [x] T1.4 Extract the complete package list (official vs AUR) into docs/PACKAGES_UPSTREAM.md.
+- [x] T1.5 List every external URL and domain upstream uses -> docs/EXTERNAL_URLS.md, marking each: KEEP / REPLACE / REMOVE.
+- [x] T1.6 List every occurrence of the name in all case forms and paths: counts per file -> docs/NAME_OCCURRENCES.md.
+- [x] T1.7 Document how themes work and how the theme switcher reloads each app.
+- [x] T1.8 Document how migrations work.
+- [x] T1.9 Document how the ISO is built and how the guided installer works.
 
 ## STAGE 2: Rebrand
 - [ ] T2.1 Write scripts/rebrand.sh with --dry-run (default) and --apply. It renames files/dirs and replaces text in all case forms (omarchy/Omarchy/OMARCHY -> apex/Apex/APEX). It must skip .git and reference/. Dry run prints every change.
