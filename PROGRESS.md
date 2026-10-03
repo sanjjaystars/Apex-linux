@@ -68,3 +68,6 @@ Result: apex-theme-set and apex-theme-list verified and hardened.
 
 2026-10-03 14:45:20 | T4.3 | Created four bespoke flagship themes for Apex Linux: themes/apex-dark (signature deep slate / sky blue), themes/apex-light (frost / azure blue), themes/apex-crimson (charcoal obsidian / carmine rose), and themes/apex-emerald (dark forest / mint emerald), each with complete 26-variable colors.toml palettes conforming to docs/THEMES.md. Ticked T4.3 in TASKS.md.
 Result: 4 bespoke themes created and verified.
+
+2026-10-03 14:45:50 | T4.4 | Implemented scripts/gen-wallpapers.sh to procedurally generate minimal geometric and linear gradient wallpapers (1920x1080) and theme switcher previews based on colors.toml for all 26 themes in the repository. Verified zero reliance on upstream wallpapers. Shellcheck passed with 0 errors. Ticked T4.4 in TASKS.md.
+Result: scripts/gen-wallpapers.sh created and wallpapers generated for all themes.

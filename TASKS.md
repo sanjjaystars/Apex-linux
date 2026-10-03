@@ -40,7 +40,7 @@
 - [x] T4.1 Define the theme folder contract in docs/THEMES.md (which files, which variables).
 - [x] T4.2 Implement/port apex-theme-set and apex-theme-list; reload every app.
 - [x] T4.3 Create "Apex Dark" plus 3 more themes.
-- [ ] T4.4 Write scripts/gen-wallpapers.sh (gradients/shapes only).
+- [x] T4.4 Write scripts/gen-wallpapers.sh (gradients/shapes only).
 - [ ] T4.5 Add theme previews and a docs/THEMES.md gallery table.
 - [ ] T4.6 Test: switching through all themes leaves no app with mismatched colors (document the manual checklist; automate what you can).
 
