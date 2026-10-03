@@ -35,3 +35,6 @@ Result: tests/check-name-leaks.sh written, validated, and passing.
 
 2026-10-03 14:12:00 | T2.7 | Ran shellcheck across all 1,031 scripts in the repository. Fixed all 8 detected errors in bin/apex-bar-text-color (SC1087), bin/apex-menu-images (SC1087, SC2053), install/config/increase-lockout-limit.sh (SC1113), migrations/1780057136.sh (SC1087), test/shell.d/branding-about-animation-test.sh (SC1087), test/shell.d/kitty-config-test.sh (SC2145), test/shell.d/update-hook-security-test.sh (SC2218), and test/shell.d/fixtures/privileged-heredoc/plain-heredoc-indented-pseudo-delimiter.sh (SC1039). Re-scan verified 1,031 scripts with 0 errors. Ticked T2.7 in TASKS.md.
 Result: All 1,031 scripts pass shellcheck with zero errors.
+
+2026-10-03 14:14:15 | T2.8 | Generated bespoke branding assets for Apex Linux: logo.txt (ANSI block art, width 45, max 81), icon.txt (54x26 box frame with Apex chevron/peak emblem), logo.svg, icon.png (300x300 RGBA), default/sddm/apex/logo.png (800x188 RGBA), default/plymouth/logo.png (800x188 RGBA), config/apex/branding/about.txt, and config/apex/branding/screensaver.txt. Verified with tests/check-name-leaks.sh. Ticked T2.8 in TASKS.md.
+Result: All branding assets created and verified.
