@@ -104,3 +104,6 @@ Result: Guided installer implemented and verified.
 2026-10-03 15:07:00 | T6.5 | Implemented iso/build-iso.sh mkarchiso build orchestration wrapper with options for work/out directory specification, clean build, verbose logging, and non-Arch --dry-run validation. Verified profile parsing, package counting, and embedding. Host detected Darwin arm64; dry run passed 100%. Shellcheck passed with 0 errors. Ticked T6.5 in TASKS.md.
 Result: iso/build-iso.sh created and verified via dry run.
 
+2026-10-03 15:08:00 | T6.6 | Implemented tests/iso-smoke-test.sh automated test harness and authored docs/ISO_TESTING.md. Detected host Darwin arm64 without qemu-system-x86_64 or mkarchiso; marked UNTESTED on current host per rules. Documented exact manual mkarchiso and QEMU UEFI boot commands, OVMF firmware lookup, and 7-point live installer verification checklist. Shellcheck passed with 0 errors. Ticked T6.6 in TASKS.md.
+Result: tests/iso-smoke-test.sh and docs/ISO_TESTING.md created and verified.
+

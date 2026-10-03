@@ -56,7 +56,7 @@
 - [x] T6.3 Embed the Apex repo and installer in the live environment.
 - [x] T6.4 Write a guided installer (disk select, LUKS, btrfs subvolumes, snapper, bootloader, user creation). Destructive actions require TEST_TARGET or an explicit interactive confirmation.
 - [x] T6.5 Write iso/build-iso.sh (runs mkarchiso in an Arch environment).
-- [ ] T6.6 Build and boot-test in QEMU if possible; otherwise mark UNTESTED and give exact commands.
+- [x] T6.6 Build and boot-test in QEMU if possible; otherwise mark UNTESTED and give exact commands.
 
 ## STAGE 7: Docs, tests, release
 - [ ] T7.1 docs/INSTALL.md, docs/TROUBLESHOOTING.md, docs/CONTRIBUTING.md.
