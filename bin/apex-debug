@@ -74,8 +74,9 @@ ACTION=$(gum choose "${OPTIONS[@]}")
 
 case "$ACTION" in
   "Upload log")
-    echo "Uploading debug log to logs.apex.org..."
-    URL=$(curl -sf -F "file=@$LOG_FILE" -Fexpires=24 https://logs.apex.org/)
+    URL_ENDPOINT="${APEX_LOGS_URL:-https://0x0.st}"
+    echo "Uploading debug log..."
+    URL=$(curl -sf -F "file=@$LOG_FILE" "$URL_ENDPOINT" 2>/dev/null || true)
     if (( $? == 0 )) && [[ -n $URL ]]; then
       echo "✓ Log uploaded successfully!"
       echo "Share this URL:"

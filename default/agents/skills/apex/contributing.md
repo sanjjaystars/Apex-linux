@@ -9,10 +9,9 @@ right place:
 - **Verified bugs** -> GitHub issues. Issues are for validated bugs only, not
   support requests.
 - **Feature ideas and suggestions** ->
-  https://github.com/omacom/apex/discussions/categories/suggestions
-- **Support and "is this a bug?" questions** -> the Discord community at
-  https://apex.org/discord. Start here when the problem isn't clearly a bug
-  in Apex itself.
+  https://github.com/sanjjaystars/Apex-linux/discussions
+- **Support and "is this a bug?" questions** -> GitHub Discussions at
+  https://github.com/sanjjaystars/Apex-linux/discussions
 
 ## Filing a Good Bug Report
 

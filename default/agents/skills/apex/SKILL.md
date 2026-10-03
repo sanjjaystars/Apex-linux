@@ -13,7 +13,7 @@ description: >
 
 # Apex Skill
 
-Manage [Apex](https://apex.org/) Linux systems - a beautiful, fun, agentic Arch Linux distribution with Hyprland.
+Manage [Apex](https://github.com/sanjjaystars/Apex-linux) Linux systems - a beautiful, fun, agentic Arch Linux distribution with Hyprland.
 
 This skill is for end-user customization on installed systems.
 It is not for contributing to Apex source code.

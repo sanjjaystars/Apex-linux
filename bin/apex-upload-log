@@ -152,7 +152,8 @@ esac
 
 echo ""
 
-URL=$(curl -sf -F "file=@$TEMP_LOG" -Fexpires=24 https://logs.apex.org/)
+URL_ENDPOINT="${APEX_LOGS_URL:-https://0x0.st}"
+URL=$(curl -sf -F "file=@$TEMP_LOG" "$URL_ENDPOINT" 2>/dev/null || true)
 
 if (( $? == 0 )) && [[ -n $URL ]]; then
   echo "✓ Log uploaded successfully!"

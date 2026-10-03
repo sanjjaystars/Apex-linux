@@ -43,7 +43,7 @@
 
   // Learn
   "learn.keybindings": {"icon":"","label":"Keybindings","action":"apex-menu-keybindings"},
-  "learn.apex": {"icon":"","label":"Apex","action":"apex-launch-webapp 'https://apex.org/manual/'"},
+  "learn.apex": {"icon":"","label":"Apex","action":"apex-launch-webapp 'https://github.com/sanjjaystars/Apex-linux'"},
   "learn.hyprland": {"icon":"","label":"Hyprland","action":"apex-launch-webapp 'https://wiki.hypr.land/'"},
   "learn.arch": {"icon":"󰣇","label":"Arch","action":"apex-launch-webapp 'https://wiki.archlinux.org/title/Main_page'"},
   "learn.neovim": {"icon":"","label":"Neovim","action":"apex-launch-webapp 'https://www.lazyvim.org/keymaps'"},
