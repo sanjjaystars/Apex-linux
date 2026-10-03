@@ -7,7 +7,7 @@
 - [x] T0.4 Install tooling if possible: shellcheck, shfmt, git, qemu, archiso.
 
 ## STAGE 1: Audit (no code changes to Apex yet)
-- [ ] T1.1 Map upstream's install flow: boot.sh -> install.sh -> each install/ stage. Write docs/AUDIT.md with one paragraph per stage.
+- [x] T1.1 Map upstream's install flow: boot.sh -> install.sh -> each install/ stage. Write docs/AUDIT.md with one paragraph per stage.
 - [ ] T1.2 List every command in bin/ with a one-line purpose each.
 - [ ] T1.3 List every config directory and which app it configures.
 - [ ] T1.4 Extract the complete package list (official vs AUR) into docs/PACKAGES_UPSTREAM.md.
